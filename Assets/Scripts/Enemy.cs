@@ -13,7 +13,8 @@ public class Enemy : Player
     // Start is called before the first frame update
     void Start()
     {
-        
+        Direction = Vector3.down;
+        Life = 2;
     }
 
     // Update is called once per frame
@@ -21,11 +22,7 @@ public class Enemy : Player
     {
         ChangDir();
         Attack();
-    }
-
-    private void Dead()
-    {
-        Debug.Log("Enemy Dead");
+        MoveObj(0.3f);
     }
 
     void ChangDir()

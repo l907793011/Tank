@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - Brick
+  - Iron
+  - Grass
+  - River
   layers:
   - Default
   - TransparentFX
@@ -15,7 +19,7 @@ TagManager:
   - UI
   - 
   - 
-  - PostProcessing
+  - 
   - 
   - 
   - 

@@ -14,10 +14,12 @@ public class Player : MonoBehaviour
     private bool bIsBurn = false;  //是否播放出生动画
     private float nBurnCdTime = 3;  //出生动画播放时间
     private float nBurnTime = 0;   //出生动画计时器
+
+    private int nLife = 1;   //生命值
     // Start is called before the first frame update
     void Start()
     {
-
+        Life = 3;
     }
 
     private void Update()
@@ -33,6 +35,12 @@ public class Player : MonoBehaviour
     {
         get { return vDirection; }
         set { vDirection = value; }
+    }
+
+    public int Life
+    {
+        get{ return nLife; }
+        set{ nLife = value; }
     }
 
     public void Move()
@@ -131,5 +139,15 @@ public class Player : MonoBehaviour
         Vector3 pos = transform.position + dir;
         GameObject goBullet = Instantiate(pbBullet, pos, Quaternion.Euler(transform.eulerAngles), goParent.transform);
         return goBullet;
+    }
+
+    private void Dead()
+    {
+        Life--;
+        if (Life <= 0)
+        {
+            Destroy(transform.gameObject);
+        }
+        Debug.Log("Enemy Dead");
     }
 }

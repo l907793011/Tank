@@ -41,18 +41,38 @@ public class Bullet : MonoBehaviour
         switch (collision.tag)
         {
             case "Player":
-                Debug.Log("OnTriggerEnter2D player");
                 if (nBulletType == 2)
                 {
                     collision.SendMessage("Dead");
+                    Destroy(transform.gameObject);
                 }
                 break;
             case "Enemy":
-                Debug.Log("OnTriggerEnter2D enemy");
+                if (nBulletType == 1)
+                {
+                    collision.SendMessage("Dead");
+                    Destroy(transform.gameObject);
+                }
+                break;
+            case "Brick":
                 if (nBulletType == 1)
                 {
                     collision.SendMessage("Dead");
                 }
+                Destroy(transform.gameObject);
+                break;
+            case "Icon":
+                if (nBulletType == 1)
+                {
+                    collision.SendMessage("Dead");
+                }
+                Destroy(transform.gameObject);
+                break;
+            case "Grass":
+                break;
+            case "River":
+                break;
+            default:
                 break;
         }
     }
