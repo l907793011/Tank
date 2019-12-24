@@ -18,8 +18,13 @@ public class SceneManager : MonoBehaviour
     //（-10,8）
     public int nRowStart = -10; //行 起始点
     public int nColStart = 8; //列 起始点
+    GameObject objParent = null;
+
+
     void Start()
     {
+        objParent = GameObject.Find("objGame");
+
         string strPath = Application.dataPath + "/Resources/Static/map.json";
         if (File.Exists(strPath))
         {
@@ -46,6 +51,7 @@ public class SceneManager : MonoBehaviour
             //Debug.Log("id: " + id);
             InitBarrier(1);
         }
+        CreateBoss();
     }
 
     public void InitBarrier(int n)
@@ -57,7 +63,6 @@ public class SceneManager : MonoBehaviour
 
     public void CreateGameObject(ArrayList alsBerrier)
     {
-        GameObject objParent = GameObject.Find("objGame");
         for (int i = 0; i < alsBerrier.Count; i++)
         {
             ArrayList alsRow =(ArrayList)alsBerrier[i];
@@ -91,6 +96,25 @@ public class SceneManager : MonoBehaviour
                     go.transform.position = vecPos;
                     go.SendMessage("SetLife", nLife);
                 }
+            }
+        }
+    }
+
+    public void CreateBoss()
+    {
+        Vector3 vecBoss = new Vector3(0, -8, 0);
+        GameObject goBoss =  Instantiate(lsGo[4], vecBoss,Quaternion.Euler(Vector3.zero), objParent.transform);
+
+        for (int i = -8; i <= -5; i++)
+        {
+            for (int j = -3; j <= 3; j++)
+            {
+                if (i<=-7 && j>= -1 && j<=1)
+                {
+                    continue;
+                }
+                Vector3 vecPos = new Vector3(j, i, 0);
+                Instantiate(lsGo[0], vecBoss, Quaternion.Euler(Vector3.zero), objParent.transform);
             }
         }
     }

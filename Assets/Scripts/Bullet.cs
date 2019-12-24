@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private int nBulletType; //子弹类型 1、角色 2、敌人
+    private int nBulletStrength = 1; //子弹强度 1、打砖块 2、打铁块
     private int nSpeed = 8;
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,11 @@ public class Bullet : MonoBehaviour
     {
         nSpeed = n;
     }
+
+    private void SetBulletStrength(int n)
+    {
+        nBulletStrength = n;
+    }
     
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -67,11 +73,15 @@ public class Bullet : MonoBehaviour
                 }
                 Destroy(transform.gameObject);
                 break;
-            case "Icon":
-                if (nBulletType == 1)
+            case "Iron":
+                if (nBulletType == 1 && nBulletStrength == 2)
                 {
                     collision.SendMessage("Dead");
                 }
+                Destroy(transform.gameObject);
+                break;
+            case "Boss":
+                collision.SendMessage("Dead");
                 Destroy(transform.gameObject);
                 break;
             case "Grass":
