@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private int nBulletType; //子弹类型 1、角色 2、敌人
-    private int nSpeed = 5;
+    private int nSpeed = 8;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,12 +28,18 @@ public class Bullet : MonoBehaviour
         SetBulletType(1);
     }
 
+    //设置子弹类型
     private void SetBulletType(int n)
     {
         //Debug.Log("SetBulletType: " + n);
         nBulletType = n;
     }
 
+    //设置子弹速度
+    private void SetBulletSpeed(int n)
+    {
+        nSpeed = n;
+    }
     
 
     private void OnTriggerEnter2D(Collider2D collision)

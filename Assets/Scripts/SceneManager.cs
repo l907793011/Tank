@@ -65,6 +65,7 @@ public class SceneManager : MonoBehaviour
             {
                 int nType = (int)alsRow[j];
                 GameObject obj = null;
+                int nLife = 1;
                 switch (nType)
                 {
                     case 1:
@@ -75,6 +76,7 @@ public class SceneManager : MonoBehaviour
                         break;
                     case 3:
                         obj = lsGo[2];
+                        nLife = 2;
                         break;
                     case 4:
                         obj = lsGo[3];
@@ -87,6 +89,7 @@ public class SceneManager : MonoBehaviour
                     GameObject go =  Instantiate(obj, objParent.transform);
                     Vector3 vecPos = new Vector3(j - 10, 8 - i, 0);
                     go.transform.position = vecPos;
+                    go.SendMessage("SetLife", nLife);
                 }
             }
         }

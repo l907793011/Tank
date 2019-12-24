@@ -31,4 +31,8 @@ public class Wall : MonoBehaviour
             Destroy(transform.gameObject);
         }
     }
+    private void SetLife(int n)
+    {
+        nLife = n;
+    }
 }
