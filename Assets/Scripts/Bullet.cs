@@ -88,6 +88,9 @@ public class Bullet : MonoBehaviour
                 break;
             case "River":
                 break;
+            case "Bound":
+                Destroy(transform.gameObject);
+                break;
             default:
                 break;
         }

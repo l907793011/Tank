@@ -11,6 +11,7 @@ TagManager:
   - Grass
   - River
   - Boss
+  - Bound
   layers:
   - Default
   - TransparentFX

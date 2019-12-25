@@ -10,13 +10,13 @@ public class PlayerLeft : Player
     // Start is called before the first frame update
     void Start()
     {
-        InitBurnEffect(effectBurn);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayBurn();
+        //PlayBurn();
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Attack();
@@ -41,6 +41,19 @@ public class PlayerLeft : Player
 
     private void Dead()
     {
+        if (IsBurn)//保护期
+        {
+            return;
+        }
+        else
+        {
+            Life--;
+            if (Life <= 0)
+            {
+                PlayerManager.Instance.CreatePlayer(2);
+                Destroy(transform.gameObject);
+            }
+        }
         Debug.Log("Player Left Dead");
     }
 }

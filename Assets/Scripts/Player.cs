@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     //private bool bRuning = false;  //是否处于移动状态
     private Vector3 vDirection = Vector3.up; //移动的方向
 
-    public GameObject goBurn;
+    private GameObject goBurn;
     private bool bIsBurn = false;  //是否播放出生动画
     private float nBurnCdTime = 3;  //出生动画播放时间
     private float nBurnTime = 0;   //出生动画计时器
@@ -19,16 +19,22 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Life = 3;
+        nLife = 3;
+        InitProtectEffect();
     }
 
     private void Update()
     {
-        PlayBurn();
+        //UpdateProtectEffect();
     }
     private void FixedUpdate()
     {
         //Move();
+    }
+
+    public bool IsBurn
+    {
+        get { return bIsBurn; }
     }
 
     public Vector3 Direction
@@ -107,15 +113,17 @@ public class Player : MonoBehaviour
     }
 
     //播放出生动画
-    public void InitBurnEffect(GameObject GameObj)
+    public void InitProtectEffect()
     {
+        GameObject prefabsProtect = (GameObject)Resources.Load("Prefabs/bullet");
+        GameObject goBurn = Instantiate(prefabsProtect,Vector3.zero,Quaternion.Euler(Vector3.zero), transform);
         bIsBurn = true;
-        goBurn = GameObj;
         goBurn.SetActive(bIsBurn);
         nBurnTime = 0;
     }
 
-    public void PlayBurn()
+    //创建保护特效
+    public void UpdateProtectEffect()
     {
         if (bIsBurn)
         {
@@ -143,11 +151,6 @@ public class Player : MonoBehaviour
 
     private void Dead()
     {
-        Life--;
-        if (Life <= 0)
-        {
-            Destroy(transform.gameObject);
-        }
-        Debug.Log("Enemy Dead");
+
     }
 }

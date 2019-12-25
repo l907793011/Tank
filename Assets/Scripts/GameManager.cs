@@ -5,9 +5,9 @@ using LitJson;
 using System.IO;
 using System;
 
-public class SceneManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    //public SceneManager Instance;
+    //public GameManager Instance;
 
     //private int nBarrier = 1;
     public GameObject[] lsGo;
@@ -20,6 +20,23 @@ public class SceneManager : MonoBehaviour
     public int nColStart = 8; //列 起始点
     GameObject objParent = null;
 
+    //单例
+    private static GameManager instance;
+    public static GameManager Instance
+    {
+        get
+        {
+            return instance;
+        }
+        set
+        {
+            instance = value;
+        }
+    }
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -49,9 +66,12 @@ public class SceneManager : MonoBehaviour
             dataScene = JsonMapper.ToObject<DataSecene>(strJson);
             //JsonData id = JsonMapper.ToObject(strJson);
             //Debug.Log("id: " + id);
-            InitBarrier(1);
         }
-        CreateBoss();
+        InitBarrier(1);
+        //var prefab = (GameObject)Resources.Load("Prefabs/player1", typeof(GameObject));
+        //GameObject go = Instantiate(prefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
+        //go.transform.SetParent(null);
+        PlayerManager.Instance.CreatePlayer(1);
     }
 
     public void InitBarrier(int n)
@@ -69,54 +89,21 @@ public class SceneManager : MonoBehaviour
             for (int j = 0; j < alsRow.Count;j++ )
             {
                 int nType = (int)alsRow[j];
-                GameObject obj = null;
-                int nLife = 1;
-                switch (nType)
+                if (nType > 0)
                 {
-                    case 1:
-                        obj = lsGo[0];
-                        break;
-                    case 2:
-                        obj = lsGo[1];
-                        break;
-                    case 3:
-                        obj = lsGo[2];
-                        nLife = 2;
-                        break;
-                    case 4:
-                        obj = lsGo[3];
-                        break;
-                    default:
-                        break;
-                }
-                if (obj != null)
-                {
-                    GameObject go =  Instantiate(obj, objParent.transform);
+                    GameObject prefabObj = lsGo[nType -1];
                     Vector3 vecPos = new Vector3(j - 10, 8 - i, 0);
-                    go.transform.position = vecPos;
+                    GameObject go =  Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
+
+                    int nLife = 1;
+                    if (nType == 3)//铁块
+                    {
+                        nLife = 2;
+                    }
+                    //Debug.Log("Type: " + nType);
                     go.SendMessage("SetLife", nLife);
                 }
             }
         }
     }
-
-    public void CreateBoss()
-    {
-        Vector3 vecBoss = new Vector3(0, -8, 0);
-        GameObject goBoss =  Instantiate(lsGo[4], vecBoss,Quaternion.Euler(Vector3.zero), objParent.transform);
-
-        for (int i = -8; i <= -5; i++)
-        {
-            for (int j = -3; j <= 3; j++)
-            {
-                if (i<=-7 && j>= -1 && j<=1)
-                {
-                    continue;
-                }
-                Vector3 vecPos = new Vector3(j, i, 0);
-                Instantiate(lsGo[0], vecBoss, Quaternion.Euler(Vector3.zero), objParent.transform);
-            }
-        }
-    }
-
 }

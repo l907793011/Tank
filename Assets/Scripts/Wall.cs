@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
-    private int nLife = 2;
+    private int nLife = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +31,7 @@ public class Wall : MonoBehaviour
             Destroy(transform.gameObject);
         }
     }
+
     private void SetLife(int n)
     {
         nLife = n;
