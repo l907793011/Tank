@@ -4,6 +4,8 @@ using UnityEngine;
 using LitJson;
 using System.IO;
 using System;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,13 +13,21 @@ public class GameManager : MonoBehaviour
 
     //private int nBarrier = 1;
     public GameObject[] lsGo;
-    
+    public Transform trImgEndGame;
+    //public AudioSource audioSource;
+    //public AudioClip audioClipStart;
+    //public AudioClip audioClipEnd;
+
     private DataSecene dataScene;
     private ArrayList alsBarrier;
 
     //（-10,8）
     public int nRowStart = -10; //行 起始点
     public int nColStart = 8; //列 起始点
+
+    private int nBarrier = 1; //关卡数
+    private int nAllBarrierNum = 0;//关卡总数
+
     GameObject objParent = null;
 
     //单例
@@ -36,6 +46,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        //获取关卡
+        nBarrier = UnityEngine.PlayerPrefs.GetInt("Barrier");
+        if (nBarrier == 0)
+        {
+            nBarrier = 1;
+        }
     }
 
     void Start()
@@ -67,11 +83,12 @@ public class GameManager : MonoBehaviour
             //JsonData id = JsonMapper.ToObject(strJson);
             //Debug.Log("id: " + id);
         }
-        InitBarrier(1);
+        nAllBarrierNum = dataScene.map.Count;
+        InitBarrier(nBarrier);
         //var prefab = (GameObject)Resources.Load("Prefabs/player1", typeof(GameObject));
         //GameObject go = Instantiate(prefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
         //go.transform.SetParent(null);
-        PlayerManager.Instance.CreatePlayer(1);
+        PlayerManager.Instance.InitBornEffect(1);
     }
 
     public void InitBarrier(int n)
@@ -79,6 +96,9 @@ public class GameManager : MonoBehaviour
         ObjBarrier obj = dataScene.GetBarrier(n);
         alsBarrier =  obj.GetBarrierList();
         CreateGameObject(alsBarrier);
+        //创建敌人
+        EnemyManager.Instance.SetBarrier(obj);
+        EnemyManager.Instance.InitCreateEnemy();
     }
 
     public void CreateGameObject(ArrayList alsBerrier)
@@ -105,5 +125,53 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    //创建新游戏
+    public void CreateNewGame()
+    {
+        nBarrier++;
+        if (nBarrier < nAllBarrierNum)
+        {
+            InitBarrier(nBarrier);
+        }
+        else
+        {
+            Debug.Log("通关全部关卡");
+        }
+
+    }
+
+    public void EndGame()
+    {
+        StopGame(true);
+        PlayrEndGameAction();
+    }
+
+    //播放停止游戏动画
+    public void PlayrEndGameAction()
+    {
+        trImgEndGame.gameObject.SetActive(true);
+        trImgEndGame.DOLocalMoveY(-15f, 5.0f).From(true);
+        Invoke("LoadScene", 5f);
+    }
+
+    //暂停游戏
+    public void StopGame(bool bIsStop)
+    {
+        GameObject[] arEnemy = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] arPlayer = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject go in arEnemy)
+        {
+            go.SendMessage("StopGame", bIsStop);
+        }
+        foreach (GameObject go in arEnemy)
+        {
+            go.SendMessage("StopGame", bIsStop);
+        }
+    }
+    private void LoadScene()
+    {
+        SceneManager.LoadScene(0);
     }
 }

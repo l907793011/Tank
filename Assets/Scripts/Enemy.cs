@@ -8,29 +8,42 @@ public class Enemy : Player
     private float fCurChangeTime = 0;   //改变方向当前累计时间
     private float fAttackCdTime = 3;   //发射子弹cd时间
     private float fAttackTime = 0;
+    private int nColorType = 0;  //颜色类型 0、普通 1、普通红色 2、快速 3、快速红色 4、高级白色  5、高级红色 6、高级黄色 7、高级绿色
 
     //private Vector3 vecDirection = Vector3.down;
     // Start is called before the first frame update
     void Start()
     {
         Direction = Vector3.down;
-        Life = 2;
+        Life = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        ChangDir();
-        Attack();
-        MoveObj(0.3f);
+        //ChangDir();
+        //Attack();
+        //MoveObj(0.3f);
     }
 
-    void ChangDir()
+    private void FixedUpdate()
+    {
+        if (!IsStopGame)
+        {
+            ChangDir();
+            Attack();
+            MoveObj(0.3f);
+        }
+       
+    }
+
+    //nType  1、必须转向
+    void ChangDir(int nType = 0)
     {
         if(fCurChangeTime >= fChangeDirCdTime)
         {
             fCurChangeTime = 0;
-            Vector3 vecDir = RandomDir();
+            Vector3 vecDir = RandomDir(nType);
             if (vecDir != Direction)
             {
                 Direction = vecDir;
@@ -43,27 +56,32 @@ public class Enemy : Player
         }
     }
 
-    //随机一个方向
-    private Vector3 RandomDir()
+    //随机一个方向 1、必须转向
+    private Vector3 RandomDir(int nType)
     {
-        int n = Random.Range(1, 11);
-        Vector3 vecDir = Vector3.down;
-        if (n >= 1 && n < 3) //12
+        Vector3 vecDir = Vector3.zero;
+        do
         {
-            vecDir = Vector3.up;
-        }
-        else if (n >= 3 && n < 7)//3456
-        {
-            vecDir = Vector3.down;
-        }
-        else if (n >= 7 && n < 9)//78
-        {
-            vecDir = Vector3.left;
-        }
-        else //9 10
-        {
-            vecDir = Vector3.right;
-        }
+            int n = Random.Range(1, 11);
+            if (n >= 1 && n < 3) //12
+            {
+                vecDir = Vector3.up;
+            }
+            else if (n >= 3 && n < 7)//3456
+            {
+                vecDir = Vector3.down;
+            }
+            else if (n >= 7 && n < 9)//78
+            {
+                vecDir = Vector3.left;
+            }
+            else //9 10
+            {
+                vecDir = Vector3.right;
+            }
+            Debug.Log("nType: "+ nType+ "Vector3.zero vecDir:  "+ vecDir.ToString() + "   Direction:  "+ Direction.ToString());
+        } while ((nType == 0 && vecDir == Vector3.zero) || (nType == 1 && vecDir == Direction));
+        
         return vecDir;
     }
 
@@ -78,6 +96,45 @@ public class Enemy : Player
         else
         {
             fAttackTime += Time.deltaTime;
+        }
+    }
+
+    public void SetColorType(int nType)
+    {
+        nColorType = nType;
+    }
+
+    public void SetLife(int nLife)
+    {
+        Life = nLife;
+    }
+
+    public void SetSpeed(int nSpeed)
+    {
+        Speed = nSpeed;
+    }
+
+    public void Dead()
+    {
+        Life--;
+        if (Life <= 0)
+        {
+            EnemyManager.Instance.CreateEnemy(); //创建敌人
+            Destroy(transform.gameObject);
+        }
+        else if(Life == 1) //只剩下最后一滴血的时候，变成白色
+        {
+            Debug.Log("改变颜色");
+            //EnemyManager.Instance.ChangeColor(transform.gameObject, nColorType);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Bound")
+        {
+            Debug.Log("OnTriggerEnter2D  Enemy  ChangeDirection");
+            fCurChangeTime += fChangeDirCdTime;
+            ChangDir(1);
         }
     }
 }

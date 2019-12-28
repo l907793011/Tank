@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     private int nBulletType; //子弹类型 1、角色 2、敌人
     private int nBulletStrength = 1; //子弹强度 1、打砖块 2、打铁块
     private int nSpeed = 8;
+    private float fExplodeTime = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,43 +57,60 @@ public class Bullet : MonoBehaviour
                 if (nBulletType == 2)
                 {
                     collision.SendMessage("Dead");
-                    Destroy(transform.gameObject);
+                    CreateExplode();
                 }
                 break;
             case "Enemy":
                 if (nBulletType == 1)
                 {
                     collision.SendMessage("Dead");
-                    Destroy(transform.gameObject);
+                    CreateExplode();
                 }
                 break;
             case "Brick":
-                if (nBulletType == 1)
-                {
+                //if (nBulletType == 1)
+                //{
                     collision.SendMessage("Dead");
-                }
-                Destroy(transform.gameObject);
+                //}
+                CreateExplode();
                 break;
             case "Iron":
                 if (nBulletType == 1 && nBulletStrength == 2)
                 {
                     collision.SendMessage("Dead");
                 }
-                Destroy(transform.gameObject);
+                CreateExplode();
                 break;
             case "Boss":
                 collision.SendMessage("Dead");
-                Destroy(transform.gameObject);
+                CreateExplode(true);
                 break;
             case "Grass":
                 break;
             case "River":
                 break;
-            case "Bound":
+            case "Bound": //外围墙直接销毁，不播放爆炸
                 Destroy(transform.gameObject);
                 break;
             default:
                 break;
         }
+    }
+
+    //播放爆炸特效
+    //bIsAudio:是否播放爆炸音效
+    public void CreateExplode(bool bIsAudio = false)
+    {
+        if(Time.time - fExplodeTime > 0.1)
+        {
+            fExplodeTime = Time.time;
+            GameObject goPrefab = (GameObject)Resources.Load("Prefabs/Effect/Explode");
+            GameObject go = Instantiate(goPrefab, transform.position, Quaternion.Euler(Vector3.zero));
+            if (bIsAudio)
+            {
+                go.SendMessage("PlayerAudio");
+            }
+        }
+        Destroy(transform.gameObject);
     }
 }

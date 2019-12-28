@@ -1,16 +1,15 @@
 fileFormatVersion: 2
-guid: b7522ab025b08e14a83b243bd6505ae9
-timeCreated: 1508203644
-licenseType: Free
+guid: 7b5709dce23815f4a8702cdbe3449ba6
 TextureImporter:
   fileIDToRecycleName:
-    21300000: misc_0
-    21300002: misc_1
-    21300004: misc_2
-    21300006: misc_3
-    21300008: misc_4
-    21300010: misc_5
-  serializedVersion: 4
+    21300000: UIView_0
+    21300002: UIView_1
+    21300004: UIView_2
+    21300006: UIView_3
+    21300008: UIView_4
+    21300010: UIView_5
+  externalObjects: {}
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -28,6 +27,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -38,7 +39,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: -1
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -50,38 +51,46 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: misc_0
+      name: UIView_0
       rect:
         serializedVersion: 2
         x: 0
@@ -94,8 +103,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 381c37b22c879eb47abd74f2f41a30d1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: misc_1
+      name: UIView_1
       rect:
         serializedVersion: 2
         x: 14
@@ -108,8 +123,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: bb0bc8fa82ab3c448b96bdcfa5a53a6c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: misc_2
+      name: UIView_2
       rect:
         serializedVersion: 2
         x: 28
@@ -122,8 +143,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ff644f3e75148d6448b53d2aafd85efb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: misc_3
+      name: UIView_3
       rect:
         serializedVersion: 2
         x: 42
@@ -136,8 +163,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 8a65b0adf98ef55488fab465ef42280c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: misc_4
+      name: UIView_4
       rect:
         serializedVersion: 2
         x: 56
@@ -150,8 +183,14 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 80da8ede43d81144f8c7be58fd64d82c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: misc_5
+      name: UIView_5
       rect:
         serializedVersion: 2
         x: 70
@@ -164,9 +203,27 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
-    outline: []
+      bones: []
+      spriteID: 29257fb3744059b459431f6059e78fb3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline:
+    - - {x: -42, y: -7}
+      - {x: -42, y: 7}
+      - {x: 42, y: 7}
+      - {x: 42, y: -7}
     physicsShape: []
+    bones: []
+    spriteID: 0f6c2e7872084ae4d98cfdd59c3f5893
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -7,29 +7,43 @@ using System;
 public class PlayerLeft : Player
 {
     public GameObject effectBurn;
+    private float nAttackCdTime = 0.2f; //攻击间隔时间
+    private float nAttackTime = 0;  //攻击当前计时
     // Start is called before the first frame update
     void Start()
     {
-
+        InitAudio();
+        InitProtectEffect();
     }
 
     // Update is called once per frame
     void Update()
     {
         //PlayBurn();
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Attack();
-        }
+       
     }
 
     private void FixedUpdate()
     {
-        Move();
+        if (!IsStopGame)
+        {
+            Move();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Attack();
+            }
+            UpdateProtectEffect();
+            nAttackTime += Time.deltaTime;
+        }
     }
 
     public void Attack()
     {
+        if (nAttackTime < nAttackCdTime)
+        {
+            return;
+        }
+        nAttackTime = 0;
         //GameObject goParent =  GameObject.Find("objBullet");
         //GameObject pbBullet = (GameObject)Resources.Load("Prefabs/bullet");
         //Vector3 dir = Direction * 0.7f;
@@ -41,6 +55,7 @@ public class PlayerLeft : Player
 
     private void Dead()
     {
+        base.Dead();
         if (IsBurn)//保护期
         {
             return;
@@ -50,7 +65,7 @@ public class PlayerLeft : Player
             Life--;
             if (Life <= 0)
             {
-                PlayerManager.Instance.CreatePlayer(2);
+                PlayerManager.Instance.CreateNewPlayer(1);
                 Destroy(transform.gameObject);
             }
         }

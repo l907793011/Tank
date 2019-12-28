@@ -36,6 +36,7 @@ public class DataSecene
 public class ObjBarrier
 {
     public string id;
+    public string difficult;
     public string map;
 
     public int Index()
@@ -77,5 +78,34 @@ public class ObjBarrier
         }
 
         return list;
+    }
+
+    public ArrayList GetDifficultList()
+    {
+        ArrayList list = new ArrayList();
+        string[] arry = difficult.Split('|');
+        foreach (string str in arry)
+        {
+            ArrayList alsMap = new ArrayList();
+            string[] ar = str.Split(';');
+            foreach (string strAr in ar)
+            {
+                int x = Convert.ToInt32(strAr);
+                alsMap.Add(x);
+            }
+            list.Add(alsMap);
+        }
+        return list;
+    }
+
+    public int GetDifficultAllNum()
+    {
+        int nAllNum = 0;
+        ArrayList arl = GetDifficultList();
+        foreach (ArrayList ar in arl)
+        {
+            nAllNum += (int)ar[1];
+        }
+        return nAllNum;
     }
 }

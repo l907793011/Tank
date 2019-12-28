@@ -10,22 +10,30 @@ public class Player : MonoBehaviour
     //private bool bRuning = false;  //是否处于移动状态
     private Vector3 vDirection = Vector3.up; //移动的方向
 
-    private GameObject goBurn;
-    private bool bIsBurn = false;  //是否播放出生动画
+    private GameObject goBorn;
+    private bool bIsBorn = false;  //是否播放出生动画
     private float nBurnCdTime = 3;  //出生动画播放时间
     private float nBurnTime = 0;   //出生动画计时器
 
+    //声音 
+    private bool bIsRun = false;
+    private AudioClip audioClipRun; //音效 行走
+    private AudioClip audioClipIde; //音效 待机
+    private AudioClip audioClipDie; //音效 死亡
+    private AudioSource audioSource; 
+
     private int nLife = 1;   //生命值
     // Start is called before the first frame update
+
+    private bool bIsStopGame = false;  //游戏是否结束
     void Start()
     {
-        nLife = 3;
-        InitProtectEffect();
+        //nLife = 3;
     }
 
     private void Update()
     {
-        //UpdateProtectEffect();
+       // UpdateProtectEffect();
     }
     private void FixedUpdate()
     {
@@ -34,7 +42,7 @@ public class Player : MonoBehaviour
 
     public bool IsBurn
     {
-        get { return bIsBurn; }
+        get { return bIsBorn; }
     }
 
     public Vector3 Direction
@@ -45,12 +53,24 @@ public class Player : MonoBehaviour
 
     public int Life
     {
-        get{ return nLife; }
-        set{ nLife = value; }
+        get { return nLife; }
+        set { nLife = value; }
+    }
+
+    public int Speed
+    {
+        set { nSpeed = value; }
+    }
+
+    public bool IsStopGame
+    {
+        get { return bIsStopGame; }
+        set { bIsStopGame = value; }
     }
 
     public void Move()
     {
+        bool bRuning = true;
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         if (h != 0 && v == 0)
@@ -81,6 +101,15 @@ public class Player : MonoBehaviour
                 ChangeDirection();
             }
             MoveObj(v);
+        }
+        else
+        {
+            bRuning = false;
+        }
+        if(bRuning != bIsRun)
+        {
+            bIsRun = bRuning;
+            SetAudio();
         }
     }
 
@@ -115,22 +144,22 @@ public class Player : MonoBehaviour
     //播放出生动画
     public void InitProtectEffect()
     {
-        GameObject prefabsProtect = (GameObject)Resources.Load("Prefabs/bullet");
-        GameObject goBurn = Instantiate(prefabsProtect,Vector3.zero,Quaternion.Euler(Vector3.zero), transform);
-        bIsBurn = true;
-        goBurn.SetActive(bIsBurn);
+        GameObject prefabsProtect = (GameObject)Resources.Load("Prefabs/effectBorn");
+        goBorn = Instantiate(prefabsProtect, transform.position,Quaternion.Euler(Vector3.zero), transform);
+        bIsBorn = true;
+        goBorn.SetActive(bIsBorn);
         nBurnTime = 0;
     }
 
     //创建保护特效
     public void UpdateProtectEffect()
     {
-        if (bIsBurn)
+        if (bIsBorn)
         {
             if (nBurnTime > nBurnCdTime)
             {
-                bIsBurn = false;
-                goBurn.SetActive(bIsBurn);
+                bIsBorn = false;
+                goBorn.SetActive(bIsBorn);
             }
             else
             {
@@ -149,8 +178,35 @@ public class Player : MonoBehaviour
         return goBullet;
     }
 
-    private void Dead()
+    public void InitAudio()
     {
+        audioClipRun = (AudioClip)Resources.Load("AudioSource/EngineDriving", typeof(AudioClip)); //行走音效
+        audioClipIde = (AudioClip)Resources.Load("AudioSource/EngineIdle", typeof(AudioClip)); //待机音效
+        audioClipDie = (AudioClip)Resources.Load("AudioSource/Die", typeof(AudioClip)); //死亡音效
+        audioSource = transform.GetComponent<AudioSource>();
+    }
 
+    private void SetAudio()
+    {
+        if (bIsRun)
+        {
+            audioSource.clip = audioClipRun;
+        }
+        else
+        {
+            audioSource.clip = audioClipIde;
+        }
+        audioSource.Play();
+    }
+
+    public void StopGame(bool stopGame)
+    {
+        bIsStopGame = stopGame;
+    }
+
+    public void Dead()
+    {
+        audioSource.clip = audioClipDie;
+        audioSource.Play();
     }
 }

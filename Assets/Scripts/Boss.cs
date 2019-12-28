@@ -28,5 +28,6 @@ public class Boss : MonoBehaviour
     private void Dead()
     {
         sRBoss.sprite = spriteBoss;
+        GameManager.Instance.EndGame();
     }
 }
