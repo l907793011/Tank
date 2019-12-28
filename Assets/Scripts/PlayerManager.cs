@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //玩家管理器
 public class PlayerManager : MonoBehaviour
 {
+    public Button btnUp;
+    public Button btnDown;
+    public Button btnLeft;
+    public Button btnRight;
+
     private bool bLeftDead = false;     //左侧玩家是否死亡
     private bool bRightDead = false;    //右侧玩家是否死亡
     private float nDeadCdTime = 3;      //死亡间隔cd
@@ -15,6 +22,8 @@ public class PlayerManager : MonoBehaviour
 
     private GameObject goBornLeft;
     private GameObject goBornRight;
+
+    private GameObject goPlayer;
 
     private static PlayerManager instance;
     public static PlayerManager Instance
@@ -29,7 +38,29 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //btnUp.onClick.AddListener(BtnUpClick);
+        EventTrigger triggetBtnUp = btnUp.GetComponent<EventTrigger>();
+
+        CreateEntryByButton(btnUp, BtnUpDownClick, EndMove);
+        CreateEntryByButton(btnDown, BtnDownDownClick, EndMove);
+        CreateEntryByButton(btnLeft, BtnLeftDownClick, EndMove);
+        CreateEntryByButton(btnRight, BtnRightDownClick, EndMove);
+    }
+
+    private void CreateEntryByButton(Button btn,UnityEngine.Events.UnityAction<BaseEventData> callDown, UnityEngine.Events.UnityAction<BaseEventData> callUp)
+    {
+        EventTrigger triggerBtn = btn.GetComponent<EventTrigger>();
+        CreateEntry(triggerBtn,EventTriggerType.PointerDown,callDown);
+        CreateEntry(triggerBtn,EventTriggerType.PointerUp,callUp);
+
+    }
+    private void CreateEntry(EventTrigger triggerBtn, EventTriggerType nType, UnityEngine.Events.UnityAction<BaseEventData> call)
+    {
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = nType;
+        entry.callback = new EventTrigger.TriggerEvent();
+        entry.callback.AddListener(call);
+        triggerBtn.triggers.Add(entry);
     }
 
     // Update is called once per frame
@@ -83,8 +114,8 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
         //Scene scene = SceneManager.GetActiveScene();
-        GameObject go =  Instantiate(prefab, vecPos, Quaternion.Euler(Vector3.zero));
-        go.transform.SetParent(null);
+        goPlayer =  Instantiate(prefab, vecPos, Quaternion.Euler(Vector3.zero));
+        //go.transform.SetParent(null);
     }
 
     //死亡后创建新角色
@@ -134,5 +165,33 @@ public class PlayerManager : MonoBehaviour
     //{
     //    Invoke("CreatePlayer", 2f);
     //}
+
+    private void EndMove(BaseEventData eventData)
+    {
+        Debug.Log("Manager EndMove");
+        goPlayer.SendMessage("MoveEnd");
+    }
+
+    private void BtnUpDownClick(BaseEventData eventData)
+    {
+        Debug.Log("Manager BtnUpDownClick");
+        goPlayer.SendMessage("MoveByDir", Vector3.up);
+    }
+
+    private void BtnDownDownClick(BaseEventData eventData)
+    {
+        goPlayer.SendMessage("MoveByDir", Vector3.down);
+    }
+
+    private void BtnLeftDownClick(BaseEventData eventData)
+    {
+        goPlayer.SendMessage("MoveByDir", Vector3.left);
+    }
+
+    private void BtnRightDownClick(BaseEventData eventData)
+    {
+        goPlayer.SendMessage("MoveByDir", Vector3.right);
+    }
+
 
 }

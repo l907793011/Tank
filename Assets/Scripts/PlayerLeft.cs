@@ -27,13 +27,19 @@ public class PlayerLeft : Player
     {
         if (!IsStopGame)
         {
-            Move();
+            //Move();
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Attack();
             }
             UpdateProtectEffect();
             nAttackTime += Time.deltaTime;
+        }
+        Debug.Log("FixedUpdate Left" + IsRun.ToString());
+        if (IsRun)
+        {
+            Debug.Log("PlayerLeft");
+            MoveByDir(Vector3.zero);
         }
     }
 

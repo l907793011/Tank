@@ -79,7 +79,7 @@ public class Enemy : Player
             {
                 vecDir = Vector3.right;
             }
-            Debug.Log("nType: "+ nType+ "Vector3.zero vecDir:  "+ vecDir.ToString() + "   Direction:  "+ Direction.ToString());
+            //Debug.Log("nType: "+ nType+ "Vector3.zero vecDir:  "+ vecDir.ToString() + "   Direction:  "+ Direction.ToString());
         } while ((nType == 0 && vecDir == Vector3.zero) || (nType == 1 && vecDir == Direction));
         
         return vecDir;

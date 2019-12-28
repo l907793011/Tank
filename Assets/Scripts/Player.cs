@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     private float nBurnTime = 0;   //出生动画计时器
 
     //声音 
-    private bool bIsRun = false;
+    private bool bIsRun = false;  //是否处于移动中
     private AudioClip audioClipRun; //音效 行走
     private AudioClip audioClipIde; //音效 待机
     private AudioClip audioClipDie; //音效 死亡
@@ -60,6 +60,11 @@ public class Player : MonoBehaviour
     public int Speed
     {
         set { nSpeed = value; }
+    }
+
+    public bool IsRun
+    {
+        get { return bIsRun; }
     }
 
     public bool IsStopGame
@@ -113,6 +118,35 @@ public class Player : MonoBehaviour
         }
     }
 
+    //根据指定方向移动
+    public void MoveByDir(Vector3 vecDir)
+    {
+        if (vecDir != Vector3.zero && vecDir != vDirection)
+        {
+            vDirection = vecDir;
+            ChangeDirection();
+        }
+        Debug.Log("MoveByDir");
+        MoveObj(0.5f);
+        if (!bIsRun)
+        {
+            Debug.Log("bIsRun true");
+            bIsRun = true;
+            SetAudio();
+        }
+    }
+
+    //结束移动
+    public void MoveEnd()
+    {
+        if (bIsRun)
+        {
+            Debug.Log("bIsRun false");
+            bIsRun = false;
+            SetAudio();
+        }
+
+    }
     public void MoveObj(float nH )
     {
         transform.Translate(vDirection * Mathf.Abs(nH) * Time.deltaTime * nSpeed, Space.World);
