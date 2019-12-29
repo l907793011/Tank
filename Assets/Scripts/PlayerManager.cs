@@ -15,12 +15,20 @@ public class PlayerManager : MonoBehaviour
     public Button btnAttack;
     public Button btnStop;
     public Button btnStart;
+    public Text txtLeftLife;
+    public Text txtRightLife;
+
 
     private bool bLeftDead = false;     //左侧玩家是否死亡
     private bool bRightDead = false;    //右侧玩家是否死亡
     private float nDeadCdTime = 3;      //死亡间隔cd
     private float nLeftDeadTime = 0;    //左侧玩家死亡时间
     private float nRightDeadTime = 0;   //右侧玩家死亡时间
+
+    private int nLeftMaxLife = 1;
+    private int nLeftCurLife = 0;
+    private int nRightMaxLife = 0;
+    private int nRightCurLife = 0;
 
 
     private GameObject goBornLeft;
@@ -41,6 +49,12 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        nLeftCurLife = nLeftMaxLife;
+        nRightCurLife = nRightMaxLife;
+        txtLeftLife.text = nLeftCurLife.ToString();
+        txtRightLife.text = nRightCurLife.ToString();
+
+
         btnAttack.onClick.AddListener(BtnAttackClick);
         btnStop.onClick.AddListener(BtnStopClick);
         btnStart.onClick.AddListener(BtnStartClick);
@@ -129,24 +143,39 @@ public class PlayerManager : MonoBehaviour
         if (nType == 1)
         {
             //bLeftDead = true;
-           // nLeftDeadTime = 0;
-            Invoke("CreatLeftPlayer", nDeadCdTime);
+            // nLeftDeadTime = 0;
+            if (nLeftCurLife > 0)
+            {
+               Invoke("CreatLeftPlayer", nDeadCdTime);
+            }
         }
         else if(nType == 2)
         {
             //bRightDead = true;
             //nRightDeadTime = 0;
-            Invoke("CreatRightPlayer", nDeadCdTime);
+            if (nRightCurLife > 0)
+            {
+                Invoke("CreatRightPlayer", nDeadCdTime);
+            }
+        }
+
+        if (nLeftCurLife <= 0 && nRightCurLife <= 0)
+        {
+            GameManager.Instance.EndGame();
         }
     }
 
     private void CreatLeftPlayer()
     {
+        nLeftCurLife--;
+        txtLeftLife.text = nLeftCurLife.ToString();
         CreatePlayer(1);
     }
 
     private void CreatRightPlayer()
     {
+        nRightCurLife--;
+        txtRightLife.text = nRightCurLife.ToString();
         CreatePlayer(2);
     }
 

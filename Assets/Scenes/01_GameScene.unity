@@ -2890,6 +2890,8 @@ MonoBehaviour:
   btnAttack: {fileID: 233054522}
   btnStop: {fileID: 885381865}
   btnStart: {fileID: 476450729}
+  txtLeftLife: {fileID: 786088230}
+  txtRightLife: {fileID: 607994879}
 --- !u!114 &534669908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3216,7 +3218,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39.399994, y: 29.600037}
+  m_AnchoredPosition: {x: 39.399994, y: 12.1}
   m_SizeDelta: {x: 58.2, y: 22.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &607994879
@@ -4117,7 +4119,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39.4, y: 12.6}
+  m_AnchoredPosition: {x: 39.4, y: 29.4}
   m_SizeDelta: {x: 58.2, y: 22.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &786088230
