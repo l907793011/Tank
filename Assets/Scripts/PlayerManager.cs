@@ -161,7 +161,9 @@ public class PlayerManager : MonoBehaviour
 
         if (nLeftCurLife <= 0 && nRightCurLife <= 0)
         {
-            GameManager.Instance.EndGame();
+            GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+            boss.SendMessage("Dead");
+            //GameManager.Instance.EndGame();
         }
     }
 
