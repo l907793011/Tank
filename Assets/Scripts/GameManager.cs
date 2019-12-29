@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
         {
             go.SendMessage("StopGame", bIsStop);
         }
-        foreach (GameObject go in arEnemy)
+        foreach (GameObject go in arPlayer)
         {
             go.SendMessage("StopGame", bIsStop);
         }

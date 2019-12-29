@@ -249,13 +249,16 @@ public class Player : MonoBehaviour
     }
     public void PlayerAudip(bool bPlay)
     {
-        if (bPlay)
+        if (audioSource)
         {
-            audioSource.Play();
-        }
-        else
-        {
-            audioSource.Stop();
+            if (bPlay)
+            {
+                audioSource.Play();
+            }
+            else
+            {
+                audioSource.Stop();
+            }
         }
     }
 
