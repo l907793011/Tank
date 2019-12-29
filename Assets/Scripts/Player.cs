@@ -202,13 +202,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    public GameObject CreateBullet()
+    //是否播放子弹音效
+    public GameObject CreateBullet(bool bAudio = false)
     {
         GameObject goParent = GameObject.Find("objBullet");
-        GameObject pbBullet = (GameObject)Resources.Load("Prefabs/bullet");
+        GameObject pbBullet = (GameObject)Resources.Load("Prefabs/Bullet");
         Vector3 dir = Direction * 0.7f;
         Vector3 pos = transform.position + dir;
         GameObject goBullet = Instantiate(pbBullet, pos, Quaternion.Euler(transform.eulerAngles), goParent.transform);
+        if (bAudio)
+        {
+            AudioSource audioSource = goBullet.GetComponent<AudioSource>();
+            if (audioSource)
+            {
+                audioSource.Play();
+            }
+        }
         return goBullet;
     }
 
@@ -236,6 +245,18 @@ public class Player : MonoBehaviour
     public void StopGame(bool stopGame)
     {
         bIsStopGame = stopGame;
+        PlayerAudip(!stopGame);
+    }
+    public void PlayerAudip(bool bPlay)
+    {
+        if (bPlay)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            audioSource.Stop();
+        }
     }
 
     public void Dead()

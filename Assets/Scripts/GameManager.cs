@@ -161,11 +161,16 @@ public class GameManager : MonoBehaviour
     {
         GameObject[] arEnemy = GameObject.FindGameObjectsWithTag("Enemy");
         GameObject[] arPlayer = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] arBullet = GameObject.FindGameObjectsWithTag("Bullet");
         foreach (GameObject go in arEnemy)
         {
             go.SendMessage("StopGame", bIsStop);
         }
         foreach (GameObject go in arEnemy)
+        {
+            go.SendMessage("StopGame", bIsStop);
+        }
+        foreach (GameObject go in arBullet)
         {
             go.SendMessage("StopGame", bIsStop);
         }

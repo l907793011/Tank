@@ -29,5 +29,10 @@ public class Boss : MonoBehaviour
     {
         sRBoss.sprite = spriteBoss;
         GameManager.Instance.EndGame();
+        AudioSource audio = transform.GetComponent<AudioSource>();
+        if (audio)
+        {
+            audio.Play();
+        }
     }
 }

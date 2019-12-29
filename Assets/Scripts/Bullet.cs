@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
     private int nBulletStrength = 1; //子弹强度 1、打砖块 2、打铁块
     private int nSpeed = 8;
     private float fExplodeTime = 0;
+    private bool bIsStopGame = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +23,10 @@ public class Bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.Translate(Vector3.up * nSpeed * Time.deltaTime, Space.Self);
+        if (!bIsStopGame)
+        {
+            transform.Translate(Vector3.up * nSpeed * Time.deltaTime, Space.Self);
+        }
     }
 
     public void SetPalyerType()
@@ -46,6 +50,11 @@ public class Bullet : MonoBehaviour
     private void SetBulletStrength(int n)
     {
         nBulletStrength = n;
+    }
+
+    public void StopGame(bool bStop)
+    {
+        bIsStopGame = bStop;
     }
     
 

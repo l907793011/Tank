@@ -51,11 +51,11 @@ public class PlayerLeft : Player
         }
         nAttackTime = 0;
         //GameObject goParent =  GameObject.Find("objBullet");
-        //GameObject pbBullet = (GameObject)Resources.Load("Prefabs/bullet");
+        //GameObject pbBullet = (GameObject)Resources.Load("Prefabs/Bullet");
         //Vector3 dir = Direction * 0.7f;
         //Vector3 pos = transform.position + dir;
         //GameObject goBullet = Instantiate(pbBullet, pos, Quaternion.Euler(transform.eulerAngles), goParent.transform);
-        GameObject goBullet = CreateBullet();
+        GameObject goBullet = CreateBullet(true);
         goBullet.SendMessage("SetBulletType", 1);
     }
 

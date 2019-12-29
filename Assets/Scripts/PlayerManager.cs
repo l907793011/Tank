@@ -12,6 +12,9 @@ public class PlayerManager : MonoBehaviour
     public Button btnDown;
     public Button btnLeft;
     public Button btnRight;
+    public Button btnAttack;
+    public Button btnStop;
+    public Button btnStart;
 
     private bool bLeftDead = false;     //左侧玩家是否死亡
     private bool bRightDead = false;    //右侧玩家是否死亡
@@ -38,7 +41,9 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //btnUp.onClick.AddListener(BtnUpClick);
+        btnAttack.onClick.AddListener(BtnAttackClick);
+        btnStop.onClick.AddListener(BtnStopClick);
+        btnStart.onClick.AddListener(BtnStartClick);
         EventTrigger triggetBtnUp = btnUp.GetComponent<EventTrigger>();
 
         CreateEntryByButton(btnUp, BtnUpDownClick, EndMove);
@@ -168,30 +173,64 @@ public class PlayerManager : MonoBehaviour
 
     private void EndMove(BaseEventData eventData)
     {
-        Debug.Log("Manager EndMove");
-        goPlayer.SendMessage("MoveEnd");
+        //Debug.Log("Manager EndMove");
+        if (goPlayer)
+        {
+            goPlayer.SendMessage("MoveEnd");
+        }
     }
 
     private void BtnUpDownClick(BaseEventData eventData)
     {
-        Debug.Log("Manager BtnUpDownClick");
-        goPlayer.SendMessage("MoveByDir", Vector3.up);
+        //Debug.Log("Manager BtnUpDownClick");
+        if (goPlayer)
+        {
+            goPlayer.SendMessage("MoveByDir", Vector3.up);
+        }
     }
 
     private void BtnDownDownClick(BaseEventData eventData)
     {
-        goPlayer.SendMessage("MoveByDir", Vector3.down);
+        if (goPlayer)
+        {
+            goPlayer.SendMessage("MoveByDir", Vector3.down);
+        }
     }
 
     private void BtnLeftDownClick(BaseEventData eventData)
     {
-        goPlayer.SendMessage("MoveByDir", Vector3.left);
+        if (goPlayer)
+        {
+            goPlayer.SendMessage("MoveByDir", Vector3.left);
+        }
     }
 
     private void BtnRightDownClick(BaseEventData eventData)
     {
-        goPlayer.SendMessage("MoveByDir", Vector3.right);
+        if (goPlayer)
+        {
+            goPlayer.SendMessage("MoveByDir", Vector3.right);
+        }
     }
 
+    private void BtnAttackClick()
+    {
+        if (goPlayer)
+        {
+            goPlayer.SendMessage("Attack");
+        }
+    }
+    private void BtnStopClick()
+    {
+        GameManager.Instance.StopGame(true);
+        btnStop.gameObject.SetActive(false);
+        btnStart.gameObject.SetActive(true);
+    }
+    private void BtnStartClick()
+    {
+        GameManager.Instance.StopGame(false);
+        btnStop.gameObject.SetActive(true);
+        btnStart.gameObject.SetActive(false);
+    }
 
 }
