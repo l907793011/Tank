@@ -141,41 +141,35 @@ public class EnemyManager : MonoBehaviour
     private GameObject GetGameObjectByType(int nType)
     {
         GameObject goPrefab = null;
-        int nIndex = 0;
-        int nLife = 1;
-        int nSpeed = 8;
-        int nHardType = nType / 10;
+        int nHardType = nType / 10;  //大类型
+        int nIndex = nType % 10;  //类型中的序号
         switch (nHardType)
         {
             case 1:  //简单 10、普通 11、普通红色
-                nIndex = Random.Range(0, objEnemySimple.Length);
                 goPrefab = objEnemySimple[nIndex];
-
-                nLife = 1;
                 break;
             case 2: //快速  20、快速 21、快速红色 
-                nIndex = Random.Range(0, objEnemyFast.Length);
                 goPrefab = objEnemyFast[nIndex];
 
-                nLife = 1;
-                nSpeed = 14;
                 break;
             case 3: //皮厚 30、高级白色  31、高级红色 32、高级黄色 33、高级绿色
-                nIndex = Random.Range(0, objEnemyHard.Length);
                 goPrefab = objEnemyFast[nIndex];
-
-                nLife = 3;
                 break;
             default:
-                nIndex = 0;
-                nLife = 1;
+                goPrefab = objEnemySimple[nIndex];
                 break;
         }
         Vector3 vecPos = GetPos();
         GameObject go = Instantiate(goPrefab, vecPos, Quaternion.Euler(Vector3.back * 180), tfParent);
-        go.SendMessage("SetColorType", nIndex);
-        go.SendMessage("SetLife", nLife);
-        go.SendMessage("SetSpeed", nSpeed);
+        go.SendMessage("SetColorType", nType);
+
+        ObjDifficult objDiffcult = GameManager.Instance.GetObjDifficultByType(nType);
+        if (objDiffcult != null)
+        {
+            go.SendMessage("SetLife", objDiffcult.Life());
+            go.SendMessage("SetSpeed", objDiffcult.Speed());
+        }
+        
         return go;
     }
 

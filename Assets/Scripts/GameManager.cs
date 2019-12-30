@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     //public AudioClip audioClipEnd;
 
     private DataSecene dataScene;
+    private DataDifficult dataDifficult;
     private ArrayList alsBarrier;
 
     //（-10,8）
@@ -106,7 +107,7 @@ public class GameManager : MonoBehaviour
             //3、
             StreamReader sr = new StreamReader(strDifficultPath);
             string strJson = sr.ReadToEnd();//获取json文件里面的字符串
-            dataScene = JsonMapper.ToObject<DataSecene>(strJson);
+            dataDifficult = JsonMapper.ToObject<DataDifficult>(strJson);
             //JsonData id = JsonMapper.ToObject(strJson);
             //Debug.Log("id: " + id);
         }
@@ -127,6 +128,11 @@ public class GameManager : MonoBehaviour
         //创建敌人
         EnemyManager.Instance.SetBarrier(obj);
         EnemyManager.Instance.InitCreateEnemy();
+    }
+
+    public ObjDifficult GetObjDifficultByType(int nType)
+    {
+        return dataDifficult.GetDifficultByType(nType);
     }
 
     public void CreateGameObject(ArrayList alsBerrier)

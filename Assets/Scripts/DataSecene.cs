@@ -112,6 +112,19 @@ public class ObjBarrier
 
 public class DataDifficult{
     public List<ObjDifficult> difficult = new List<ObjDifficult>();
+
+    public ObjDifficult GetDifficultByType(int nType)
+    {
+        foreach (ObjDifficult objDif in difficult)
+        {
+            if (objDif.Id() == nType)
+            {
+                return objDif;
+            }
+        }
+        return null;
+    }
+
 }
 
 public class ObjDifficult
@@ -120,4 +133,25 @@ public class ObjDifficult
     public string speed;
     public string life;
     public string bulletStrength;
+
+    public int Id()
+    {
+        return  Convert.ToInt32(id);
+    }
+
+    public int Speed()
+    {
+        return Convert.ToInt32(speed);
+    }
+
+    public int Life()
+    {
+        return Convert.ToInt32(life);
+    }
+
+    public int BulletStrength()
+    {
+        return Convert.ToInt32(bulletStrength);
+    }
+
 }
