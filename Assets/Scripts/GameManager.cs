@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     {
         objParent = GameObject.Find("objGame");
 
+        //读取map表
         string strPath = Application.dataPath + "/Resources/Static/map.json";
         if (File.Exists(strPath))
         {
@@ -83,6 +84,33 @@ public class GameManager : MonoBehaviour
             //JsonData id = JsonMapper.ToObject(strJson);
             //Debug.Log("id: " + id);
         }
+        //读取Difficult表
+        string strDifficultPath = Application.dataPath + "/Resources/Static/map.json";
+        if (File.Exists(strDifficultPath))
+        {
+            //1、
+            //StreamReader sr = new StreamReader(strPath);
+            //string strJson = sr.ReadToEnd();//获取json文件里面的字符串
+            //sr.Close();
+
+            //2、
+            //string strJson = File.ReadAllText(strPath);
+            //Hashtable jd = JsonMapper.ToObject<Hashtable>(strJson);
+            //JsonData jd1 = jd["map"] as JsonData;
+            //for (int i = 0; i < jd1.Count; i++)
+            //{
+            //    Debug.Log(jd1[i]["id"]);
+            //    Debug.Log(jd1[i]["map"]);
+            //}
+
+            //3、
+            StreamReader sr = new StreamReader(strDifficultPath);
+            string strJson = sr.ReadToEnd();//获取json文件里面的字符串
+            dataScene = JsonMapper.ToObject<DataSecene>(strJson);
+            //JsonData id = JsonMapper.ToObject(strJson);
+            //Debug.Log("id: " + id);
+        }
+
         nAllBarrierNum = dataScene.map.Count;
         InitBarrier(nBarrier);
         //var prefab = (GameObject)Resources.Load("Prefabs/player1", typeof(GameObject));

@@ -109,3 +109,15 @@ public class ObjBarrier
         return nAllNum;
     }
 }
+
+public class DataDifficult{
+    public List<ObjDifficult> difficult = new List<ObjDifficult>();
+}
+
+public class ObjDifficult
+{
+    public string id;
+    public string speed;
+    public string life;
+    public string bulletStrength;
+}

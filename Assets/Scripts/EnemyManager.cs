@@ -11,7 +11,9 @@ public class EnemyManager : MonoBehaviour
     private int nRemainNum = 0;//剩余敌人数量
     private int nCurNum = 0;   //当前的敌人数量
     private int nNumInTime = 6; //当前同时在线的敌人数量
-    public GameObject[] objEnemy; //预制件列表 0、普通 1、普通红色 2、快速 3、快速红色 4、高级白色  5、高级红色 6、高级黄色 7、高级绿色
+    public GameObject[] objEnemySimple; //预制件列表 10、普通 11、普通红色 
+    public GameObject[] objEnemyFast; //预制件列表  20、快速 21、快速红色 
+    public GameObject[] objEnemyHard; //预制件列表   30、快速红色 31、高级白色  32、高级红色 33、高级黄色 34、高级绿色
     private int nAllRandomNum = 0; //随机总数
     private ObjBarrier objBarrier;//当前关卡数据
     private ArrayList arlDifficult; //当前关卡难度列表
@@ -142,19 +144,26 @@ public class EnemyManager : MonoBehaviour
         int nIndex = 0;
         int nLife = 1;
         int nSpeed = 8;
-        switch (nType)
+        int nHardType = nType / 10;
+        switch (nHardType)
         {
-            case 1:  //简单 0、普通 1、普通红色
-                nIndex = Random.Range(0, 2);
+            case 1:  //简单 10、普通 11、普通红色
+                nIndex = Random.Range(0, objEnemySimple.Length);
+                goPrefab = objEnemySimple[nIndex];
+
                 nLife = 1;
                 break;
-            case 2: //快速  2、快速 3、快速红色 
-                nIndex = Random.Range(2, 4);
+            case 2: //快速  20、快速 21、快速红色 
+                nIndex = Random.Range(0, objEnemyFast.Length);
+                goPrefab = objEnemyFast[nIndex];
+
                 nLife = 1;
                 nSpeed = 14;
                 break;
-            case 3: //皮厚 4、高级白色  5、高级红色 6、高级黄色 7、高级绿色
-                nIndex = Random.Range(5, 7);
+            case 3: //皮厚 30、高级白色  31、高级红色 32、高级黄色 33、高级绿色
+                nIndex = Random.Range(0, objEnemyHard.Length);
+                goPrefab = objEnemyFast[nIndex];
+
                 nLife = 3;
                 break;
             default:
@@ -162,7 +171,6 @@ public class EnemyManager : MonoBehaviour
                 nLife = 1;
                 break;
         }
-        goPrefab = objEnemy[nIndex];
         Vector3 vecPos = GetPos();
         GameObject go = Instantiate(goPrefab, vecPos, Quaternion.Euler(Vector3.back * 180), tfParent);
         go.SendMessage("SetColorType", nIndex);
