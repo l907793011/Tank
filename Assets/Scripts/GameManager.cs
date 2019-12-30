@@ -117,7 +117,6 @@ public class GameManager : MonoBehaviour
         //var prefab = (GameObject)Resources.Load("Prefabs/player1", typeof(GameObject));
         //GameObject go = Instantiate(prefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
         //go.transform.SetParent(null);
-        PlayerManager.Instance.InitBornEffect(1);
     }
 
     public void InitBarrier(int n)
@@ -128,6 +127,7 @@ public class GameManager : MonoBehaviour
         //创建敌人
         EnemyManager.Instance.SetBarrier(obj);
         EnemyManager.Instance.InitCreateEnemy();
+        PlayerManager.Instance.InitBornEffect(1);
     }
 
     public ObjDifficult GetObjDifficultByType(int nType)
@@ -165,13 +165,17 @@ public class GameManager : MonoBehaviour
     public void CreateNewGame()
     {
         nBarrier++;
-        if (nBarrier < nAllBarrierNum)
+        if (nBarrier <= nAllBarrierNum)
         {
+            ResetScene();
             InitBarrier(nBarrier);
+            PlayerManager.Instance.InitPlayerInfo();
+            EnemyManager.Instance.InitEnemyInfo();
         }
         else
         {
             Debug.Log("通关全部关卡");
+            EndGame();
         }
 
     }
@@ -209,8 +213,33 @@ public class GameManager : MonoBehaviour
             go.SendMessage("StopGame", bIsStop);
         }
     }
+
+    //重置场景
+    private void ResetScene()
+    {
+       DesttroyGo("Brick");
+       DesttroyGo("Player");
+       DesttroyGo("Iron");
+       DesttroyGo("Grass");
+       DesttroyGo("River");
+       DesttroyGo("Enemy");
+       DesttroyGo("Boss");
+       DesttroyGo("EnemyIcon");
+       DesttroyGo("Bullet");
+    }
+
+    private void DesttroyGo(string strTag)
+    {
+        GameObject[] goArry = GameObject.FindGameObjectsWithTag(strTag);
+        foreach (GameObject go in goArry)
+        {
+            Destroy(go);
+        }
+
+    }
     private void LoadScene()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
+
 }
