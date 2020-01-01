@@ -132,7 +132,7 @@ public class Enemy : Player
     {
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Bound")
         {
-            Debug.Log("OnTriggerEnter2D  Enemy  ChangeDirection");
+            //Debug.Log("OnCollisionEnter2D  Enemy  ChangeDirection");
             fCurChangeTime += fChangeDirCdTime;
             ChangDir(1);
         }
