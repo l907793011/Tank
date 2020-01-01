@@ -89,27 +89,9 @@ public class GameManager : MonoBehaviour
         string strDifficultPath = Application.dataPath + "/Resources/Static/map.json";
         if (File.Exists(strDifficultPath))
         {
-            //1、
-            //StreamReader sr = new StreamReader(strPath);
-            //string strJson = sr.ReadToEnd();//获取json文件里面的字符串
-            //sr.Close();
-
-            //2、
-            //string strJson = File.ReadAllText(strPath);
-            //Hashtable jd = JsonMapper.ToObject<Hashtable>(strJson);
-            //JsonData jd1 = jd["map"] as JsonData;
-            //for (int i = 0; i < jd1.Count; i++)
-            //{
-            //    Debug.Log(jd1[i]["id"]);
-            //    Debug.Log(jd1[i]["map"]);
-            //}
-
-            //3、
             StreamReader sr = new StreamReader(strDifficultPath);
             string strJson = sr.ReadToEnd();//获取json文件里面的字符串
             dataDifficult = JsonMapper.ToObject<DataDifficult>(strJson);
-            //JsonData id = JsonMapper.ToObject(strJson);
-            //Debug.Log("id: " + id);
         }
 
         nAllBarrierNum = dataScene.map.Count;
