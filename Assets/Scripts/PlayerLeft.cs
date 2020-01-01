@@ -35,7 +35,7 @@ public class PlayerLeft : Player
             UpdateProtectEffect();
             nAttackTime += Time.deltaTime;
         }
-        Debug.Log("FixedUpdate Left" + IsRun.ToString());
+        //Debug.Log("FixedUpdate Left" + IsRun.ToString());
         if (IsRun)
         {
             Debug.Log("PlayerLeft");

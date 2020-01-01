@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
+using System;
 
 //敌人管理器
 public class EnemyManager : MonoBehaviour
@@ -70,9 +72,10 @@ public class EnemyManager : MonoBehaviour
 
     private void InitEnemyIcon()
     {
-        GameObject prefIcon = (GameObject)Resources.Load("Prefabs/UI/ImgEnemy");
+        GameObject prefIcon = (GameObject)Resources.Load("Prefabs/UI/ImgEnemy",typeof(GameObject));
         for (int i = 0;i<nEnemyAllNum;i++)
         {
+            //ChinarMessage.MessageBox(IntPtr.Zero,);
             Vector3 vecPos = Vector3.zero;
             vecPos.x = nStartX + i % 4 * nSpace;
             vecPos.y = nStartY - i / 4 * nSpace;
@@ -85,10 +88,10 @@ public class EnemyManager : MonoBehaviour
     private Vector3 GetPos()
     {
         Vector3 vecPos = Vector3.zero;
-        int nRang = Random.Range(0, 3);
+        int nRang = UnityEngine.Random.Range(0, 3);
         while (nLastPos == nRang)
         {
-            nRang = Random.Range(0, 3);
+            nRang = UnityEngine.Random.Range(0, 3);
         }
         vecPos = lsPos[nRang];
         nLastPos = nRang;
@@ -115,7 +118,7 @@ public class EnemyManager : MonoBehaviour
     //创建敌人
     public void CreateEnemy()
     {
-        int n = Random.Range(0, nAllRandomNum);
+        int n = UnityEngine.Random.Range(0, nAllRandomNum);
         foreach (ArrayList arDifficult in arlDifficult)
         {
             int nType = (int)arDifficult[0];
@@ -143,6 +146,7 @@ public class EnemyManager : MonoBehaviour
         GameObject goPrefab = null;
         int nHardType = nType / 10;  //大类型
         int nIndex = nType % 10;  //类型中的序号
+        //Debug.Log("EnemyManager: GetGameObjectByType nType:" + nType + "   nIndex:" + nIndex);
         switch (nHardType)
         {
             case 1:  //简单 10、普通 11、普通红色
@@ -153,14 +157,20 @@ public class EnemyManager : MonoBehaviour
 
                 break;
             case 3: //皮厚 30、高级白色  31、高级红色 32、高级黄色 33、高级绿色
-                goPrefab = objEnemyFast[nIndex];
+                goPrefab = objEnemyHard[nIndex];
                 break;
             default:
                 goPrefab = objEnemySimple[nIndex];
                 break;
         }
         Vector3 vecPos = GetPos();
+        if (goPrefab == null)
+        {
+            Debug.Log("goPrefab is null");
+        }
+        //Debug.Log("EnemyManager: GetGameObjectByType  22222");
         GameObject go = Instantiate(goPrefab, vecPos, Quaternion.Euler(Vector3.back * 180), tfParent);
+        //Debug.Log("EnemyManager: GetGameObjectByType  333333");
         go.SendMessage("SetColorType", nType);
 
         ObjDifficult objDiffcult = GameManager.Instance.GetObjDifficultByType(nType);
@@ -169,7 +179,7 @@ public class EnemyManager : MonoBehaviour
             go.SendMessage("SetLife", objDiffcult.Life());
             go.SendMessage("SetSpeed", objDiffcult.Speed());
         }
-        
+        //Debug.Log("EnemyManager: GetGameObjectByType  4444444");
         return go;
     }
 

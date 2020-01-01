@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     private int nBarrier = 1; //关卡数
     private int nAllBarrierNum = 0;//关卡总数
 
-    GameObject objParent = null;
+    public GameObject objParent = null;
 
     //单例
     private static GameManager instance;
@@ -57,10 +57,23 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        objParent = GameObject.Find("objGame");
+        //objParent = GameObject.Find("objGame");
 
-        //读取map表
+
         string strPath = Application.dataPath + "/Resources/Static/map.json";
+//#if UNITY_EDITOR && !UNITY_ANDROID
+        Debug.Log("Application.dataPath: "+ Application.dataPath);
+        Debug.Log("Application.dataPath strPath: " + strPath);
+//#endif
+
+//#if !UNITY_EDITOR && UNITY_ANDROID
+        Debug.Log("Application.persistentDataPath: " + Application.persistentDataPath);
+        Debug.Log("Application.temporaryCachePath: "+ Application.temporaryCachePath);
+//#endif
+
+
+        //GameObject go =  (GameObject)Resources.Load("Static/map");
+        //读取map表
         if (File.Exists(strPath))
         {
             //1、
@@ -81,24 +94,23 @@ public class GameManager : MonoBehaviour
             //3、
             StreamReader sr = new StreamReader(strPath);
             string strJson = sr.ReadToEnd();//获取json文件里面的字符串
+            Debug.Log("GameManager: Start  map: " + strJson);
             dataScene = JsonMapper.ToObject<DataSecene>(strJson);
             //JsonData id = JsonMapper.ToObject(strJson);
             //Debug.Log("id: " + id);
         }
         //读取Difficult表
-        string strDifficultPath = Application.dataPath + "/Resources/Static/map.json";
+        string strDifficultPath = Application.dataPath + "/Resources/Static/difficult.json";
         if (File.Exists(strDifficultPath))
         {
             StreamReader sr = new StreamReader(strDifficultPath);
             string strJson = sr.ReadToEnd();//获取json文件里面的字符串
+            Debug.Log("GameManager: Start  strDifficultPath: " + strJson);
             dataDifficult = JsonMapper.ToObject<DataDifficult>(strJson);
         }
 
         nAllBarrierNum = dataScene.map.Count;
         InitBarrier(nBarrier);
-        //var prefab = (GameObject)Resources.Load("Prefabs/player1", typeof(GameObject));
-        //GameObject go = Instantiate(prefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
-        //go.transform.SetParent(null);
         PlayerManager.Instance.InitBornEffect(1);
     }
 
@@ -107,6 +119,7 @@ public class GameManager : MonoBehaviour
         ObjBarrier obj = dataScene.GetBarrier(n);
         alsBarrier =  obj.GetBarrierList();
         CreateGameObject(alsBarrier);
+
         //创建敌人
         EnemyManager.Instance.SetBarrier(obj);
         EnemyManager.Instance.InitCreateEnemy();
