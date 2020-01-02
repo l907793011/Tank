@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour
 {
     private Vector3[] lsPos = {new Vector3(-10,8,0), new Vector3(0, 8, 0), new Vector3(10, 8, 0) };
     private int nLastPos = 0; //上次随机的位置
-    private int nEnemyAllNum = 1; //敌人总数量
+    private int nEnemyAllNum = 20; //敌人总数量
     private int nRemainNum = 0;//剩余敌人数量
     private int nCurNum = 0;   //当前的敌人数量
     private int nNumInTime = 6; //当前同时在线的敌人数量
@@ -49,7 +49,8 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
-        InitEnemyInfo();
+        nRemainNum = nEnemyAllNum;
+        InitEnemyIcon();
     }
 
     // Update is called once per frame
@@ -67,13 +68,6 @@ public class EnemyManager : MonoBehaviour
                 nCurTime += Time.deltaTime;
             }
         }
-    }
-
-    public void InitEnemyInfo()
-    {
-        nRemainNum = nEnemyAllNum;
-        nCurNum = 0;
-        InitEnemyIcon();
     }
 
     private void InitEnemyIcon()
@@ -228,7 +222,6 @@ public class EnemyManager : MonoBehaviour
         if (nRemainNum <= 0)
         {
             Debug.Log("恭喜你，通关了");
-            GameManager.Instance.CreateNewGame();
             return;
         }
     }

@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
     private float nLeftDeadTime = 0;    //左侧玩家死亡时间
     private float nRightDeadTime = 0;   //右侧玩家死亡时间
 
-    private int nLeftMaxLife = 100;
+    private int nLeftMaxLife = 1;
     private int nLeftCurLife = 0;
     private int nRightMaxLife = 0;
     private int nRightCurLife = 0;
@@ -49,7 +49,10 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitPlayerInfo();
+        nLeftCurLife = nLeftMaxLife;
+        nRightCurLife = nRightMaxLife;
+        txtLeftLife.text = nLeftCurLife.ToString();
+        txtRightLife.text = nRightCurLife.ToString();
 
 
         btnAttack.onClick.AddListener(BtnAttackClick);
@@ -100,14 +103,6 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-    }
-
-    public void InitPlayerInfo()
-    {
-        nLeftCurLife = nLeftMaxLife;
-        nRightCurLife = nRightMaxLife;
-        txtLeftLife.text = nLeftCurLife.ToString();
-        txtRightLife.text = nRightCurLife.ToString();
     }
 
     //创建指定位置的角色1、左侧 2、右侧

@@ -12,7 +12,6 @@ TagManager:
   - River
   - Boss
   - Bound
-  - EnemyIcon
   layers:
   - Default
   - TransparentFX

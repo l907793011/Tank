@@ -60,15 +60,15 @@ public class GameManager : MonoBehaviour
         //objParent = GameObject.Find("objGame");
 
 
-        string strPath = "/Resources/Static/map.json";
+        string strPath = Application.dataPath + "/Resources/Static/map.json";
 //#if UNITY_EDITOR && !UNITY_ANDROID
-        //Debug.Log("Application.dataPath: "+ Application.dataPath);
-        //Debug.Log("Application.dataPath strPath: " + strPath);
+        Debug.Log("Application.dataPath: "+ Application.dataPath);
+        Debug.Log("Application.dataPath strPath: " + strPath);
 //#endif
 
 //#if !UNITY_EDITOR && UNITY_ANDROID
-        //Debug.Log("Application.persistentDataPath: " + Application.persistentDataPath);
-        //Debug.Log("Application.temporaryCachePath: "+ Application.temporaryCachePath);
+        Debug.Log("Application.persistentDataPath: " + Application.persistentDataPath);
+        Debug.Log("Application.temporaryCachePath: "+ Application.temporaryCachePath);
         //#endif
 
 
@@ -109,7 +109,6 @@ public class GameManager : MonoBehaviour
         //创建敌人
         EnemyManager.Instance.SetBarrier(obj);
         EnemyManager.Instance.InitCreateEnemy();
-        PlayerManager.Instance.InitBornEffect(1);
     }
 
     public ObjDifficult GetObjDifficultByType(int nType)
@@ -147,17 +146,13 @@ public class GameManager : MonoBehaviour
     public void CreateNewGame()
     {
         nBarrier++;
-        if (nBarrier <= nAllBarrierNum)
+        if (nBarrier < nAllBarrierNum)
         {
-            ResetScene();
             InitBarrier(nBarrier);
-            PlayerManager.Instance.InitPlayerInfo();
-            EnemyManager.Instance.InitEnemyInfo();
         }
         else
         {
             Debug.Log("通关全部关卡");
-            EndGame();
         }
 
     }
@@ -195,33 +190,8 @@ public class GameManager : MonoBehaviour
             go.SendMessage("StopGame", bIsStop);
         }
     }
-
-    //重置场景
-    private void ResetScene()
-    {
-       DesttroyGo("Brick");
-       DesttroyGo("Player");
-       DesttroyGo("Iron");
-       DesttroyGo("Grass");
-       DesttroyGo("River");
-       DesttroyGo("Enemy");
-       DesttroyGo("Boss");
-       DesttroyGo("EnemyIcon");
-       DesttroyGo("Bullet");
-    }
-
-    private void DesttroyGo(string strTag)
-    {
-        GameObject[] goArry = GameObject.FindGameObjectsWithTag(strTag);
-        foreach (GameObject go in goArry)
-        {
-            Destroy(go);
-        }
-
-    }
     private void LoadScene()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
-
 }
