@@ -69,31 +69,16 @@ public class GameManager : MonoBehaviour
 //#if !UNITY_EDITOR && UNITY_ANDROID
         Debug.Log("Application.persistentDataPath: " + Application.persistentDataPath);
         Debug.Log("Application.temporaryCachePath: "+ Application.temporaryCachePath);
-//#endif
+        //#endif
 
 
         //GameObject go =  (GameObject)Resources.Load("Static/map");
         //读取map表
-        if (File.Exists(strPath))
+        string strJson = Util.UtilFile.Instance.GetDataFromFile(strPath);
+        if (strJson.Length != 0)
         {
-            //1、
             //StreamReader sr = new StreamReader(strPath);
             //string strJson = sr.ReadToEnd();//获取json文件里面的字符串
-            //sr.Close();
-
-            //2、
-            //string strJson = File.ReadAllText(strPath);
-            //Hashtable jd = JsonMapper.ToObject<Hashtable>(strJson);
-            //JsonData jd1 = jd["map"] as JsonData;
-            //for (int i = 0; i < jd1.Count; i++)
-            //{
-            //    Debug.Log(jd1[i]["id"]);
-            //    Debug.Log(jd1[i]["map"]);
-            //}
-
-            //3、
-            StreamReader sr = new StreamReader(strPath);
-            string strJson = sr.ReadToEnd();//获取json文件里面的字符串
             Debug.Log("GameManager: Start  map: " + strJson);
             dataScene = JsonMapper.ToObject<DataSecene>(strJson);
             //JsonData id = JsonMapper.ToObject(strJson);
@@ -101,10 +86,11 @@ public class GameManager : MonoBehaviour
         }
         //读取Difficult表
         string strDifficultPath = Application.dataPath + "/Resources/Static/difficult.json";
-        if (File.Exists(strDifficultPath))
+        strJson = Util.UtilFile.Instance.GetDataFromFile(strDifficultPath);
+        if (strJson.Length != 0)
         {
-            StreamReader sr = new StreamReader(strDifficultPath);
-            string strJson = sr.ReadToEnd();//获取json文件里面的字符串
+            //StreamReader sr = new StreamReader(strDifficultPath);
+            //string strJson = sr.ReadToEnd();//获取json文件里面的字符串
             Debug.Log("GameManager: Start  strDifficultPath: " + strJson);
             dataDifficult = JsonMapper.ToObject<DataDifficult>(strJson);
         }
