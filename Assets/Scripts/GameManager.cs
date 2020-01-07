@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 using LitJson;
 using System.IO;
 using System;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -55,27 +60,92 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    //一个测试类
+    class testJson
+    {
+        public string Name;
+
+        public testJson(string m_name)
+        {
+            Name = m_name;
+        }
+    }
+
+    List<testJson> jsonList = new List<testJson>();
+
     void Start()
     {
         //objParent = GameObject.Find("objGame");
+        Debug.Log("11111111111111111111111");
+        string strPath1 = "/Static/map.json";
+        string strText = "";
+        string url = Application.streamingAssetsPath + strPath1;
+#if UNITY_EDITOR
+        strText = File.ReadAllText(url);
+#elif UNITY_ANDROID
+        WWW www = new WWW(url);
+        while (!www.isDone) { }
+        strText = www.text //www.text.Split(new string[] {"\r\n"}, StringSplitOptions.None);
+#endif
+        Debug.Log("2222222222222222222");
+        if (!string.IsNullOrEmpty(strText))
+        {
+            //StreamReader sr = new StreamReader(strPath);
+            //string strJson = sr.ReadToEnd();//获取json文件里面的字符串
+            Debug.Log("GameManager: Start  map: " + strText);
+            JObject jo = (JObject)JsonConvert.DeserializeObject(strText);
+            dataScene = JsonUtility.FromJson<DataSecene>(strText);
+            //dataScene = JsonMapper.ToObject<DataSecene>(strText);
+            Debug.Log("GameManager: Start  map Count: " + dataScene.map.Count);
+            //JsonData id = JsonMapper.ToObject(strJson);
+            //Debug.Log("id: " + id);
+        }
+
+        //Debug.Log("11111111111111111111111");
+        //FileInfo m_file = new FileInfo(Application.persistentDataPath + "/map.json");
+        //Debug.Log("222222222222222222222222222");
+        ////判断   Exists 会返回是否存在
+        //if (m_file.Exists)
+        //{ 
+        //    Debug.Log("333333333333333333333333");
+        //    StreamReader sr = new StreamReader(Application.persistentDataPath + "/map.json");
+        //    string nextLine;
+        //    while ((nextLine = sr.ReadLine()) != null)
+        //    {
+        //        Debug.Log("44444:    "+ nextLine);
+        //        jsonList.Add(JsonUtility.FromJson<testJson>(nextLine));
+        //    }
+        //    sr.Close();
+        //}
+        //else
+        //{
+        //    Debug.Log("55555555555555555555555");
+        //}
 
 
-        string strPath = Application.dataPath + "/Resources/Static/map.json";
+
+
+
+        string strPath = "/Resource/Static/map.json";
 //#if UNITY_EDITOR && !UNITY_ANDROID
-        Debug.Log("Application.dataPath: "+ Application.dataPath);
-        Debug.Log("Application.dataPath strPath: " + strPath);
+        //Debug.Log("Application.dataPath: "+ Application.dataPath);
+        //Debug.Log("Application.dataPath strPath: " + strPath);
 //#endif
 
 //#if !UNITY_EDITOR && UNITY_ANDROID
-        Debug.Log("Application.persistentDataPath: " + Application.persistentDataPath);
-        Debug.Log("Application.temporaryCachePath: "+ Application.temporaryCachePath);
+        //Debug.Log("Application.persistentDataPath: " + Application.persistentDataPath);
+        //Debug.Log("Application.temporaryCachePath: "+ Application.temporaryCachePath);
+        //Debug.Log("Application.streamingAssetsPath: " + Application.streamingAssetsPath);
         //#endif
 
 
         //GameObject go =  (GameObject)Resources.Load("Static/map");
         //读取map表
         string strJson = Util.UtilFile.Instance.GetDataFromFile(strPath);
-        if (strJson.Length != 0)
+        StreamReader reader = new StreamReader(Application.persistentDataPath + strPath);
+        //string strJson = reader.ReadToEnd();
+        if (!string.IsNullOrEmpty(strJson))
         {
             //StreamReader sr = new StreamReader(strPath);
             //string strJson = sr.ReadToEnd();//获取json文件里面的字符串
@@ -85,9 +155,9 @@ public class GameManager : MonoBehaviour
             //Debug.Log("id: " + id);
         }
         //读取Difficult表
-        string strDifficultPath = Application.dataPath + "/Resources/Static/difficult.json";
+        string strDifficultPath = "/Resource/Static/difficult.json";
         strJson = Util.UtilFile.Instance.GetDataFromFile(strDifficultPath);
-        if (strJson.Length != 0)
+        if ( !string.IsNullOrEmpty(strJson))
         {
             //StreamReader sr = new StreamReader(strDifficultPath);
             //string strJson = sr.ReadToEnd();//获取json文件里面的字符串
