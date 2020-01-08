@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using UnityEngine;
 
+using LitJson;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 namespace Util
 {
     public class UtilFile
@@ -37,106 +40,20 @@ namespace Util
 
         public string  GetDataFromFile(string path)
         {
-            StreamReader reader = new StreamReader(Application.persistentDataPath + path);
-            string jsonData = reader.ReadToEnd();
-            reader.Close();
-            reader.Dispose();
-            return jsonData;
-            //string json = "";
-            //TextAsset text = Resources.Load<TextAsset>(path);
-            //json = text.text;
-            ////if (string.IsNullOrEmpty(json)) return null;
-            //return json;
-
-            //string strPath = "";
-            //if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer ||
-            //    Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
-            //{
-            //    strPath = Application.dataPath + "/StreamingAssets/" + path;
-            //}
-            //else if (Application.platform == RuntimePlatform.IPhonePlayer)
-            //{
-            //    strPath = Application.dataPath + "/Raw/" + path;
-            //}
-            //else if (Application.platform == RuntimePlatform.Android)
-            //{
-            //    strPath = Application.persistentDataPath + path;
-            //    strPath = "jar:file://" + Application.dataPath + "!/assets/";
-            //    Debug.Log("GetDataFromFile  Android: " + strPath);
-            //    PritFullName(Application.persistentDataPath);
-            //}
-            //else
-            //{
-            //    strPath = Application.dataPath + "/config/" + path;
-            //}
-            //Debug.Log("GetDataFromFile  strPath: " + strPath);
-            //string strJson = "";
-            //if (File.Exists(strPath))
-            //{
-            //    Debug.Log("GetDataFromFile : " + "1111111111111111");
-
-
-            //    byte[] ctn = null;
-                //#if UNITY_EDITOR || UNITY_EDITOR_64 || UNITY_EDITOR_OSX || UNITY_IOS || UNITY_STANDALONE
-                //                ctn = File.ReadAllBytes(strPath);
-                //#elif UNITY_ANDROID
-                //            int indexOfAssets = newPath.IndexOf(Application.streamingAssetsPath) ;
-                //            if (indexOfAssets == 0)
-                //            {
-                //                ctn = ApkReader.Instance.ReadAll(newPath);
-                //            }
-                //            else
-                //            {
-                //                ctn = File.ReadAllBytes(strPath);
-                //            }  
-                //#endif
-                //                strJson = Encoding.ASCII.GetString(ctn);
-                //                Debug.Log("GetDataFromFile strJson : " + strJson);
-                //                2、
-                //            string strJson = File.ReadAllText(strPath);
-                //                Hashtable jd = JsonMapper.ToObject<Hashtable>(strJson);
-                //                JsonData jd1 = jd["map"] as JsonData;
-                //                for (int i = 0; i < jd1.Count; i++)
-                //                {
-                //                    Debug.Log(jd1[i]["id"]);
-                //                    Debug.Log(jd1[i]["map"]);
-                //                }
-
-                //                ctn = File.ReadAllBytes(newPath);
-                //                StreamReader sr = new StreamReader(strPath);
-                //                strJson = sr.ReadToEnd();//获取json文件里面的字符串
-                //            }
-                //            Debug.Log("GetDataFromFile  strJson: " + strJson);
-
-            //}
-//                Debug.Log("path: "+ path);
-//            string newPath = this.FullPathForFilename(path);
-//            Debug.Log("newPath: " + newPath);
-//            if (string.IsNullOrEmpty(newPath))
-//                return null;
-//            byte[] ctn = null;
-//#if UNITY_EDITOR || UNITY_EDITOR_64 || UNITY_EDITOR_OSX || UNITY_IOS || UNITY_STANDALONE
-//            Debug.Log("strJson: " + "3333333333333333333333333333");
-//            ctn = File.ReadAllBytes(newPath);
-//#elif UNITY_ANDROID
-//            int indexOfAssets = newPath.IndexOf(Application.streamingAssetsPath) ;
-//            if (indexOfAssets == 0)
-//            {
-//                Debug.Log("strJson: " + "1111111111111111111111111");
-//                ctn = ApkReader.Instance.ReadAll(newPath);
-//            }
-//            else
-//            {
-//                Debug.Log("strJson: " + "222222222222222222222222222");
-//                ctn = File.ReadAllBytes(newPath);
-//            }  
-//#endif
-//            Debug.Log("strJson 11111:  ");
-//            string strJson = strJson = Encoding.ASCII.GetString(ctn);
-//            Debug.Log("strJson 22222: " + strJson);
-            //return strJson;
+            string strText = "";
+            string strPath = Application.streamingAssetsPath + path;
+#if UNITY_EDITOR
+            strText = File.ReadAllText(strPath);
+#elif UNITY_ANDROID
+        WWW www = new WWW(strPath);
+        while (!www.isDone) { }
+        string str = www.text;
+        strText = Encoding.UTF8.GetString(www.bytes,3, www.bytes.Length -3);
+#endif
+            return strText;
         }
 
+        /*
         private void PritFullName(string strPath)
         {
             foreach (string d in Directory.GetFileSystemEntries(strPath))
@@ -149,7 +66,7 @@ namespace Util
             }
         }
 
-
+        
         public string FullPathForFilename(string path)
         {
             if (path == null)
@@ -210,6 +127,6 @@ namespace Util
             }
 #endif
             return isExists;
-        }
+        }*/
     }
 }
