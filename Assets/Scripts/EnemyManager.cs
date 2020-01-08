@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour
         {
             if (nCurTime >= nCdTime)
             {
-                //CreateEnemy();
+                CreateEnemy();
                 nCurTime = 0;
             }
             else
@@ -125,7 +125,7 @@ public class EnemyManager : MonoBehaviour
             int nDifficult = (int)arDifficult[1];
             if (n < nDifficult)
             {
-                //CreateEnemyByType(nType);
+                CreateEnemyByType(nType);
                 nCurNum++;
                 break;
             }
