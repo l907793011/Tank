@@ -40,15 +40,23 @@ namespace Util
 
         public string  GetDataFromFile(string path)
         {
-            string strText = "";
+            /*string strText = "";
             string strPath = Application.streamingAssetsPath + path;
 #if UNITY_EDITOR
-            strText = File.ReadAllText(strPath);
+        strText = File.ReadAllText(strPath);
 #elif UNITY_ANDROID
         WWW www = new WWW(strPath);
         while (!www.isDone) { }
         string str = www.text;
         strText = Encoding.UTF8.GetString(www.bytes,3, www.bytes.Length -3);
+#endif
+            return strText;*/
+            TextAsset go = (TextAsset)Resources.Load(path);
+            string strText = "";
+#if UNITY_EDITOR
+            strText = go.text;
+#elif UNITY_ANDROID
+            strText = go.text;//Encoding.UTF8.GetString(go.bytes, 0, go.bytes.Length);
 #endif
             return strText;
         }
