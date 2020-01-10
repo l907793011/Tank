@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour
 {
     private Vector3[] lsPos = {new Vector3(-10,8,0), new Vector3(0, 8, 0), new Vector3(10, 8, 0) };
     private int nLastPos = 0; //上次随机的位置
-    private int nEnemyAllNum = 20; //敌人总数量
+    private int nEnemyAllNum = 1; //敌人总数量
     private int nRemainNum = 0;//剩余敌人数量
     private int nCurNum = 0;   //当前的敌人数量
     private int nNumInTime = 6; //当前同时在线的敌人数量
@@ -33,6 +33,11 @@ public class EnemyManager : MonoBehaviour
     public Transform tfParent;
     public Transform tfParentIcon;//敌人图标父节点
 
+    //击杀的数量
+    private int nNumSimple = 0; 
+    private int nNumFast = 0;
+    private int nNumHard = 0;
+
     // Start is called before the first frame update
 
     private static EnemyManager instance;
@@ -40,6 +45,21 @@ public class EnemyManager : MonoBehaviour
     {
         get { return instance; }
         set { instance = value; }
+    }
+
+    public int NumSimple
+    {
+        get { return nNumSimple; }
+    }
+
+    public int NumFast
+    {
+        get { return nNumFast; }
+    }
+
+    public int NumHard
+    {
+        get { return nNumHard; }
     }
 
     private void Awake()
@@ -154,7 +174,6 @@ public class EnemyManager : MonoBehaviour
                 break;
             case 2: //快速  20、快速 21、快速红色 
                 goPrefab = objEnemyFast[nIndex];
-
                 break;
             case 3: //皮厚 30、高级白色  31、高级红色 32、高级黄色 33、高级绿色
                 goPrefab = objEnemyHard[nIndex];
@@ -210,10 +229,22 @@ public class EnemyManager : MonoBehaviour
     }
 
     //全部怪物死亡
-    public void EnemyDead()
+    public void EnemyDead(int nType)
     {
         nCurNum--;
         nRemainNum--;
+        if (nType < 20)
+        {
+            nNumSimple++;
+        }
+        else if(nType < 30)
+        {
+            nNumFast++;
+        }
+        else
+        {
+            nNumHard++;
+        }
         GameObject go = (GameObject)arIcon[nRemainNum];
         if (go)
         {
@@ -221,6 +252,7 @@ public class EnemyManager : MonoBehaviour
         }
         if (nRemainNum <= 0)
         {
+            GameManager.Instance.ThroughGame();
             Debug.Log("恭喜你，通关了");
             return;
         }

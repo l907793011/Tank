@@ -119,7 +119,7 @@ public class Enemy : Player
         Life--;
         if (Life <= 0)
         {
-            EnemyManager.Instance.EnemyDead(); //创建敌人
+            EnemyManager.Instance.EnemyDead(nColorType); //创建敌人
             Destroy(transform.gameObject);
         }
         else if(Life == 1) //只剩下最后一滴血的时候，变成白色

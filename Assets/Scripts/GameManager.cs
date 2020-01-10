@@ -18,10 +18,22 @@ public class GameManager : MonoBehaviour
 
     //private int nBarrier = 1;
     public GameObject[] lsGo;
-    public Transform trImgEndGame;
+    public Transform tfImgEndGame;
     //public AudioSource audioSource;
     //public AudioClip audioClipStart;
     //public AudioClip audioClipEnd;
+    public Transform tfImgThrough;
+    public UnityEngine.UI.Text txtNum1;
+    public UnityEngine.UI.Text txtNum2;
+    public UnityEngine.UI.Text txtNum3;
+    public UnityEngine.UI.Text txtScore1;
+    public UnityEngine.UI.Text txtScore2;
+    public UnityEngine.UI.Text txtScore3;
+    public UnityEngine.UI.Text txtStageNum;
+    public UnityEngine.UI.Text txtSorceNum;
+    public UnityEngine.UI.Text txtTotalNum;
+
+    public UnityEngine.UI.Button btnNext;
 
     private DataSecene dataScene;
     private DataDifficult dataDifficult;
@@ -35,6 +47,17 @@ public class GameManager : MonoBehaviour
     private int nAllBarrierNum = 0;//关卡总数
 
     public GameObject objParent = null;
+
+    //结算界面相关
+    private int nScoreSimple = 0;
+    private int nScoreFast = 0;
+    private int nScoreHard = 0;
+
+    private int nCurSimple = 0;
+    private int nCurFast = 0;
+    private int nCurHard = 0;
+
+    private int nDifNum = 1;
 
     //单例
     private static GameManager instance;
@@ -58,20 +81,16 @@ public class GameManager : MonoBehaviour
         {
             nBarrier = 1;
         }
+        btnNext.onClick.AddListener(BtnNextClick);
     }
 
     void Start()
     {
         //objParent = GameObject.Find("objGame");
 
-        string strPath1 = "/Static/map.json";
-        string strPath = "Resources/Static/map.json";
-        Debug.Log("Application.dataPath: " + Application.dataPath);
-        Debug.Log("Application.persistentDataPath: " + Application.persistentDataPath);
-        Debug.Log("Application.temporaryCachePath: " + Application.temporaryCachePath);
-        Debug.Log("Application.streamingAssetsPath: " + Application.streamingAssetsPath);
-
-        //GameObject go =  (GameObject)Resources.Load("Static/map");
+        string strPath1 = "Static/map";
+        //string strPath = "Resources/Static/map.json";
+        TextAsset go =  (TextAsset)Resources.Load("Static/map");
         //读取map表
         string strJson = Util.UtilFile.Instance.GetDataFromFile(strPath1);
         //Byte[] byteJson = Scx.FileUtils.Instance.GetDataFromFile(strPath);
@@ -88,7 +107,7 @@ public class GameManager : MonoBehaviour
             //Debug.Log("id: " + id);
         }
         //读取Difficult表
-        string strDifficultPath = "/Static/difficult.json";
+        string strDifficultPath = "Static/difficult";
         strJson = Util.UtilFile.Instance.GetDataFromFile(strDifficultPath);
         Debug.Log("GameManager strJson: " + strJson);
         if ( !string.IsNullOrEmpty(strJson))
@@ -149,6 +168,7 @@ public class GameManager : MonoBehaviour
     //创建新游戏
     public void CreateNewGame()
     {
+        tfImgThrough.gameObject.SetActive(false);
         nBarrier++;
         if (nBarrier < nAllBarrierNum)
         {
@@ -170,8 +190,8 @@ public class GameManager : MonoBehaviour
     //播放停止游戏动画
     public void PlayrEndGameAction()
     {
-        trImgEndGame.gameObject.SetActive(true);
-        trImgEndGame.DOLocalMoveY(-15f, 5.0f).From(true);
+        tfImgEndGame.gameObject.SetActive(true);
+        tfImgEndGame.DOLocalMoveY(-15f, 5.0f).From(true);
         Invoke("LoadScene", 5f);
     }
 
@@ -197,5 +217,87 @@ public class GameManager : MonoBehaviour
     private void LoadScene()
     {
         SceneManager.LoadScene(0);
+    }
+
+    //通关游戏
+    public void ThroughGame()
+    {
+        tfImgThrough.gameObject.SetActive(true);
+        StopGame(true);
+        OnShowThroughInfo();
+    }
+
+    //显示通关信息
+    private void OnShowThroughInfo()
+    {
+        int nNumSimple = EnemyManager.Instance.NumSimple;
+        int nNumFast = EnemyManager.Instance.NumFast;
+        int nNumHard = EnemyManager.Instance.NumHard;
+        nScoreSimple = nNumSimple * 100;
+        nScoreFast = nNumFast * 200;
+        nScoreHard = nNumHard * 300;
+        //private int nCurSimple = 0;
+        //private int nCurFast = 0;
+        //private int nCurHard = 0;
+
+        txtStageNum.text = nBarrier.ToString();
+        txtSorceNum.text = (nScoreSimple + nScoreFast+ nScoreHard).ToString();
+        txtTotalNum.text = (nNumSimple + nNumFast + nNumHard).ToString();
+
+        txtNum1.text = nNumSimple.ToString();
+        txtNum2.text = nNumFast.ToString();
+        txtNum3.text = nNumHard.ToString();
+        txtScore1.text = nCurSimple.ToString();
+        txtScore2.text = nCurFast.ToString();
+        txtScore3.text = nCurHard.ToString();
+
+        InvokeRepeating("OnShowScoreSimple", 0.01f, 0.01f);
+        InvokeRepeating("OnShowScoreNumFast", 0.02f, 0.01f);
+        InvokeRepeating("OnShowScoreHard", 0.03f, 0.01f);
+    }
+
+    private void OnShowScoreSimple()
+    {
+        if (nCurSimple >= nScoreSimple)
+        {
+            CancelInvoke("OnShowScoreSimple");
+        }
+        else
+        {
+            nCurSimple += nDifNum;
+            txtScore1.text = nCurSimple.ToString();
+        }
+
+    }
+
+    private void OnShowScoreNumFast()
+    {
+        if (nCurFast >= nScoreFast)
+        {
+            CancelInvoke("OnShowScoreNumFast");
+        }
+        else
+        {
+            nCurFast += nDifNum;
+            txtScore2.text = nCurFast.ToString();
+        }
+    }
+
+    private void OnShowScoreHard()
+    {
+        if (nCurHard >= nScoreHard)
+        {
+            CancelInvoke("OnShowScoreHard");
+        }
+        else
+        {
+            nCurHard += nDifNum;
+            txtScore3.text = nCurHard.ToString();
+        }
+    }
+
+    private void BtnNextClick()
+    {
+        CreateNewGame();
     }
 }
