@@ -176,10 +176,16 @@ public class Player : MonoBehaviour
     }
 
     //播放出生动画
-    public void InitProtectEffect()
+    public void CreateProtectEffect()
     {
         GameObject prefabsProtect = (GameObject)Resources.Load("Prefabs/effectBorn");
         goBorn = Instantiate(prefabsProtect, transform.position,Quaternion.Euler(Vector3.zero), transform);
+        InitProtectEffect();
+    }
+
+    //初始化保护特效
+    public void InitProtectEffect()
+    {
         bIsBorn = true;
         goBorn.SetActive(bIsBorn);
         nBurnTime = 0;
@@ -267,4 +273,13 @@ public class Player : MonoBehaviour
         audioSource.clip = audioClipDie;
         audioSource.Play();
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Enemy" || collision.gameObject.name == "Bound")
+        {
+
+        }
+    }
+
 }

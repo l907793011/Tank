@@ -13,7 +13,7 @@ public class PlayerLeft : Player
     void Start()
     {
         InitAudio();
-        InitProtectEffect();
+        CreateProtectEffect();
     }
 
     // Update is called once per frame
