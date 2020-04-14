@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour
 {
     private Vector3[] lsPos = {new Vector3(-10,8,0), new Vector3(0, 8, 0), new Vector3(10, 8, 0) };
     private int nLastPos = 0; //上次随机的位置
-    private int nEnemyAllNum = 1; //敌人总数量
+    private int nEnemyAllNum = 10; //敌人总数量
     private int nRemainNum = 0;//剩余敌人数量
     private int nCurNum = 0;   //当前的敌人数量
     private int nNumInTime = 6; //当前同时在线的敌人数量
@@ -24,8 +24,8 @@ public class EnemyManager : MonoBehaviour
     private float nCurTime = 0;//创建敌人的计时器
 
     //敌人图标信息
-    public float nStartX = -34;
-    public float nStartY = -63;
+    public float nStartX = -34f;
+    public float nStartY = -63f;
     public float nSpace = 18;
     private ArrayList arIcon = new ArrayList();
 
@@ -99,7 +99,10 @@ public class EnemyManager : MonoBehaviour
             Vector3 vecPos = Vector3.zero;
             vecPos.x = nStartX + i % 4 * nSpace;
             vecPos.y = nStartY - i / 4 * nSpace;
-            GameObject goIcon = Instantiate(prefIcon, vecPos,Quaternion.Euler(Vector3.zero),tfParentIcon);
+            Debug.Log("nStartX: " + nStartX + " nStartY: " + nStartY + " nSpace: " + nSpace);
+            Debug.Log("vecPosX: "+ vecPos.x + " vecPosY: "+ vecPos.y);
+            GameObject goIcon = Instantiate(prefIcon,tfParentIcon); // vecPos,Quaternion.Euler(Vector3.zero),
+            goIcon.transform.localPosition = vecPos;
             arIcon.Add(goIcon);
         }
     }

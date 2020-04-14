@@ -3428,10 +3428,10 @@ MonoBehaviour:
   - {fileID: 4274493824235715249, guid: 771ddf3a9c846fc458310d58d9b73e20, type: 3}
   - {fileID: 4165700219462745704, guid: 4fb0e4260127a36439cb3d6df19c8f64, type: 3}
   - {fileID: 7034898090228752562, guid: 332b122bdaabb954aa2693d254e53b8a, type: 3}
-  nStartX: 690
-  nStartY: 330
+  nStartX: -30
+  nStartY: 60
   nSpace: 18
-  tfParent: {fileID: 0}
+  tfParent: {fileID: 1937909893}
   tfParentIcon: {fileID: 1082236077}
 --- !u!82 &534669909
 AudioSource:
