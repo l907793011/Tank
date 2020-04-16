@@ -72,7 +72,7 @@ public class Bullet : MonoBehaviour
             case "Enemy":
                 if (nBulletType == 1)
                 {
-                    collision.SendMessage("Dead");
+                    collision.SendMessage("Dead",false);
                     //CreateExplode();
                 }
                 break;

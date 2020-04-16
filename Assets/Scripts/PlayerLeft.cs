@@ -9,7 +9,9 @@ public class PlayerLeft : Player
     public GameObject effectBurn;
     private float nAttackCdTime = 0.2f; //攻击间隔时间
     private float nAttackTime = 0;  //攻击当前计时
+    private int nBulletStrength = 1;
     // Start is called before the first frame update
+
     void Start()
     {
         InitAudio();
@@ -38,7 +40,7 @@ public class PlayerLeft : Player
         //Debug.Log("FixedUpdate Left" + IsRun.ToString());
         if (IsRun)
         {
-            Debug.Log("PlayerLeft");
+            //Debug.Log("PlayerLeft");
             MoveByDir(Vector3.zero);
         }
     }
@@ -56,7 +58,7 @@ public class PlayerLeft : Player
         //Vector3 pos = transform.position + dir;
         //GameObject goBullet = Instantiate(pbBullet, pos, Quaternion.Euler(transform.eulerAngles), goParent.transform);
         GameObject goBullet = CreateBullet(true);
-        goBullet.SendMessage("SetBulletType", 1);
+        goBullet.SendMessage("SetBulletType", nBulletStrength);
     }
 
     private void Dead()
@@ -71,17 +73,18 @@ public class PlayerLeft : Player
             Life--;
             if (Life <= 0)
             {
+                PlayerManager.Instance.ChangeLeftLife(-1);
                 PlayerManager.Instance.CreateNewPlayer(1);
                 Destroy(transform.gameObject);
             }
         }
         Debug.Log("Player Left Dead");
     }
-    //碰撞检车
+    //碰撞检测
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        string strName = collision.gameObject.name;
-        switch (strName)
+        string strTag = collision.gameObject.tag;
+        switch (strTag)
         {
             case "Bomb": //炸弹
                 EnemyManager.Instance.AllEnemyDead();
@@ -90,13 +93,16 @@ public class PlayerLeft : Player
             case "IronBuff"://boss保护墙变铁块
                 break;
             case "AddLife"://生命加1
-                Life++;
+                PlayerManager.Instance.ChangeLeftLife(1);
                 break;
             case "Protect"://添加保护罩
+                CreateProtectEffect();
                 break;
             case "Star"://子弹强化
+                nBulletStrength = 2;
                 break;
             case "Stop"://怪物暂停
+                GameManager.Instance.StopGame(true,false,false,5f);
                 break;
         }
     }

@@ -25,7 +25,10 @@ public class Player : MonoBehaviour
     private int nLife = 1;   //生命值
     // Start is called before the first frame update
 
-    private bool bIsStopGame = false;  //游戏是否结束
+    private bool bIsStopGame = false;  //游戏是否暂停
+    private float fStopTime = 0;
+    private float fStopCurTime = 0;
+
     void Start()
     {
         //nLife = 3;
@@ -35,9 +38,10 @@ public class Player : MonoBehaviour
     {
        // UpdateProtectEffect();
     }
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         //Move();
+        
     }
 
     public bool IsProtect
@@ -126,11 +130,11 @@ public class Player : MonoBehaviour
             vDirection = vecDir;
             ChangeDirection();
         }
-        Debug.Log("MoveByDir");
+        //Debug.Log("MoveByDir");
         MoveObj(0.5f);
         if (!bIsRun)
         {
-            Debug.Log("bIsRun true");
+            //Debug.Log("bIsRun true");
             bIsRun = true;
             SetAudio();
         }
@@ -141,7 +145,7 @@ public class Player : MonoBehaviour
     {
         if (bIsRun)
         {
-            Debug.Log("bIsRun false");
+            //Debug.Log("bIsRun false");
             bIsRun = false;
             SetAudio();
         }
@@ -251,9 +255,11 @@ public class Player : MonoBehaviour
 
     public void StopGame(bool stopGame)
     {
+        //Debug.Log("stopGame: "+stopGame.ToString());
         bIsStopGame = stopGame;
         PlayerAudip(!stopGame);
     }
+
 
     public void PlayerAudip(bool bPlay)
     {

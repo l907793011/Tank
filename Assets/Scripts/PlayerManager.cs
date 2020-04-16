@@ -169,8 +169,9 @@ public class PlayerManager : MonoBehaviour
 
     private void CreatLeftPlayer()
     {
-        nLeftCurLife--;
-        txtLeftLife.text = nLeftCurLife.ToString();
+        //ChangeLeftLife(-1);
+        //nLeftCurLife--;
+        //OnShowLeftLife();
         CreatePlayer(1);
     }
 
@@ -179,6 +180,17 @@ public class PlayerManager : MonoBehaviour
         nRightCurLife--;
         txtRightLife.text = nRightCurLife.ToString();
         CreatePlayer(2);
+    }
+
+    public void ChangeLeftLife(int nValue)
+    {
+        nLeftCurLife += nValue;
+        OnShowLeftLife();
+    }
+
+    private void OnShowLeftLife()
+    {
+        txtLeftLife.text = nLeftCurLife.ToString();
     }
 
     public void InitBornEffect(int nType)

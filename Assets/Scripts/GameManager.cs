@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject objParent = null;
 
+
     //结算界面相关
     private int nScoreSimple = 0;
     private int nScoreFast = 0;
@@ -183,6 +184,7 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        Debug.Log("EndGame: true");
         StopGame(true);
         PlayrEndGameAction();
     }
@@ -196,24 +198,37 @@ public class GameManager : MonoBehaviour
     }
 
     //暂停游戏
-    public void StopGame(bool bIsStop)
+    public void StopGame(bool bStopEnemy,bool bStopPlayer = true, bool bStopBullet = true,float nTime = 0)
     {
         GameObject[] arEnemy = GameObject.FindGameObjectsWithTag("Enemy");
         GameObject[] arPlayer = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] arBullet = GameObject.FindGameObjectsWithTag("Bullet");
+
         foreach (GameObject go in arEnemy)
         {
-            go.SendMessage("StopGame", bIsStop);
+            go.SendMessage("StopGame", bStopEnemy);
         }
         foreach (GameObject go in arPlayer)
         {
-            go.SendMessage("StopGame", bIsStop);
+            go.SendMessage("StopGame", bStopPlayer);
         }
         foreach (GameObject go in arBullet)
         {
-            go.SendMessage("StopGame", bIsStop);
+            go.SendMessage("StopGame", bStopBullet);
+        }
+
+        if(nTime > 0)
+        {
+            Invoke("StartGame", nTime);
         }
     }
+
+    public void StartGame()
+    {
+        Debug.Log("StartGame: false");
+        StopGame(false);
+    }
+
     private void LoadScene()
     {
         SceneManager.LoadScene(0);
@@ -223,6 +238,7 @@ public class GameManager : MonoBehaviour
     public void ThroughGame()
     {
         tfImgThrough.gameObject.SetActive(true);
+        Debug.Log("ThroughGame: true");
         StopGame(true);
         OnShowThroughInfo();
     }
