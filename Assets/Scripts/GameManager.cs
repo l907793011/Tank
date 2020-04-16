@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     //private int nBarrier = 1;
     public GameObject[] lsGo;
+    public GameObject[] arGoBuff;
     public Transform tfImgEndGame;
     //public AudioSource audioSource;
     //public AudioClip audioClipStart;
