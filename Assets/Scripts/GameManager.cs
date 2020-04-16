@@ -150,20 +150,68 @@ public class GameManager : MonoBehaviour
                 int nType = (int)alsRow[j];
                 if (nType > 0)
                 {
-                    GameObject prefabObj = lsGo[nType -1];
-                    Vector3 vecPos = new Vector3(j - 10, 8 - i, 0);
-                    GameObject go =  Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
-
-                    int nLife = 1;
-                    if (nType == 3)//铁块
-                    {
-                        nLife = 2;
-                    }
-                    //Debug.Log("Type: " + nType);
-                    go.SendMessage("SetLife", nLife);
+                    CreateGameObjectByType(nType, j - 10, 8 - i);
                 }
             }
         }
+    }
+
+    public void CreateGameObjectByType(int nType,float x,float y)
+    {
+        GameObject prefabObj = lsGo[nType - 1];
+        Vector3 vecPos = new Vector3(x, y, 0);
+        GameObject go = Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
+
+        int nLife = 1;
+        if (nType == 3)//铁块
+        {
+            nLife = 2;
+        }
+        //Debug.Log("Type: " + nType);
+        go.SendMessage("SetLife", nLife);
+    }
+
+    //获取boss城墙,修改为铁块
+    public ArrayList GetArBossBound(int nType)
+    {
+        string strTag = "BrickAll";
+        if (nType == 1)
+        {
+            strTag = "Iron";
+        }
+        ArrayList arBossBound = new ArrayList();
+        GameObject[] arBound = GameObject.FindGameObjectsWithTag(strTag);
+
+        foreach (GameObject go in arBound)
+        {
+            Vector3 vecPos = go.transform.position;
+            if (vecPos.x > -3 && vecPos.x < 3 && vecPos.y < -6)
+            {
+                arBossBound.Add(go);
+            }
+        }
+        return arBossBound;
+    }
+
+    public void ChangeBossBoundToType(int nType,float nTime = 0)
+    {
+        ArrayList arBossBound = GetArBossBound(nType);
+        foreach (GameObject go in arBossBound)
+        {
+            Vector3 vecPos = go.transform.position;
+            CreateGameObjectByType(nType, vecPos.x, vecPos.y);
+            Destroy(go);
+        }
+        if (nTime > 0 )
+        {
+            StopCoroutine("RecoverBossBound");
+            Invoke("RecoverBossBound", nTime);
+        }
+    }
+
+    public void RecoverBossBound()
+    {
+        ChangeBossBoundToType(1);
     }
 
     //创建新游戏

@@ -91,6 +91,7 @@ public class PlayerLeft : Player
                 Destroy(collision.gameObject);
                 break;
             case "IronBuff"://boss保护墙变铁块
+                GameManager.Instance.ChangeBossBoundToType(3,20f);
                 break;
             case "AddLife"://生命加1
                 PlayerManager.Instance.ChangeLeftLife(1);

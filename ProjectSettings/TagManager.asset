@@ -13,11 +13,12 @@ TagManager:
   - Boss
   - Bound
   - Bomb
-  - IconBuff
   - AddLife
   - Protect
   - Star
   - Stop
+  - IronBuff
+  - BrickAll
   layers:
   - Default
   - TransparentFX
