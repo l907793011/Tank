@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     private Vector3 vDirection = Vector3.up; //移动的方向
 
     private GameObject goBorn;
-    private bool bIsBorn = false;  //是否播放出生动画
+    private bool bIsProtect = false;  //是否播放出生动画
     private float nBurnCdTime = 3;  //出生动画播放时间
     private float nBurnTime = 0;   //出生动画计时器
 
@@ -40,9 +40,9 @@ public class Player : MonoBehaviour
         //Move();
     }
 
-    public bool IsBurn
+    public bool IsProtect
     {
-        get { return bIsBorn; }
+        get { return bIsProtect; }
     }
 
     public Vector3 Direction
@@ -186,20 +186,20 @@ public class Player : MonoBehaviour
     //初始化保护特效
     public void InitProtectEffect()
     {
-        bIsBorn = true;
-        goBorn.SetActive(bIsBorn);
+        bIsProtect = true;
+        goBorn.SetActive(bIsProtect);
         nBurnTime = 0;
     }
 
     //创建保护特效
     public void UpdateProtectEffect()
     {
-        if (bIsBorn)
+        if (bIsProtect)
         {
             if (nBurnTime > nBurnCdTime)
             {
-                bIsBorn = false;
-                goBorn.SetActive(bIsBorn);
+                bIsProtect = false;
+                goBorn.SetActive(bIsProtect);
             }
             else
             {
@@ -227,6 +227,7 @@ public class Player : MonoBehaviour
         return goBullet;
     }
 
+    //初始化音效
     public void InitAudio()
     {
         audioClipRun = (AudioClip)Resources.Load("AudioSource/EngineDriving", typeof(AudioClip)); //行走音效
@@ -253,6 +254,7 @@ public class Player : MonoBehaviour
         bIsStopGame = stopGame;
         PlayerAudip(!stopGame);
     }
+
     public void PlayerAudip(bool bPlay)
     {
         if (audioSource)
@@ -274,12 +276,5 @@ public class Player : MonoBehaviour
         audioSource.Play();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.name == "Enemy" || collision.gameObject.name == "Bound")
-        {
-
-        }
-    }
 
 }

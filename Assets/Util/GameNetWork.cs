@@ -233,10 +233,6 @@ namespace Assets.Util
                     }
                 }
             }).Start();
-
-
-
-
         }
 
         private void SendServerDataToAll(string receiveType)
@@ -252,8 +248,6 @@ namespace Assets.Util
             //发送广播等待传输回来房间信息
             //初始化一个发送广播和指定端口的网络端口实例
             Socket sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
-
 
 
             //设置该scoket实例的发送形式
@@ -349,8 +343,6 @@ namespace Assets.Util
     }
 
 
-
-
     /// <summary>
     /// 客户端  封装部分
     /// </summary>
@@ -375,8 +367,6 @@ namespace Assets.Util
         private bool openCheckOutServer = true;
 
 
-
-
         /// <summary>
         /// 广播发送一条信息
         /// </summary>
@@ -386,8 +376,6 @@ namespace Assets.Util
             //发送广播等待传输回来房间信息
             //初始化一个发送广播和指定端口的网络端口实例
             Socket sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
-
 
 
             //设置该scoket实例的发送形式
@@ -401,18 +389,12 @@ namespace Assets.Util
             }
         }
 
-
-
-
         private void CloseCheckOutServer()
         {
             openCheckOutServer = false;
             radiateSocket.Close();
             radiateSocket = null;
         }
-
-
-
 
         private static IPEndPoint BindReceiverSocket(Socket receiveSocket, int port)
         {
@@ -421,10 +403,6 @@ namespace Assets.Util
             {
                 sep = new IPEndPoint(IPAddress.Any, port);//初始化一个侦听局域网内部所有IP和指定端口
                 receiveSocket.Bind(sep);//绑定这个实例
-
-
-
-
             }
             catch (Exception)
             {
@@ -441,7 +419,6 @@ namespace Assets.Util
             return sep;
         }
     }
-
 
 
     /// <summary>
@@ -555,7 +532,6 @@ namespace Assets.Util
         /// <param name="OnReceive"></param>
         public void ConnectServer(ServerData serverData, Action<ServerData> OnConnect, Action<string> OnReceive)
         {
-
 
             clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);//使用指定的地址簇协议、套接字类型和通信协议
             IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(serverData.IP), serverData.port); // 用指定的ip和端口号初始化IPEndPoint实例

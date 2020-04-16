@@ -12,6 +12,12 @@ TagManager:
   - River
   - Boss
   - Bound
+  - Bomb
+  - IconBuff
+  - AddLife
+  - Protect
+  - Star
+  - Stop
   layers:
   - Default
   - TransparentFX

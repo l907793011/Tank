@@ -62,7 +62,7 @@ public class PlayerLeft : Player
     private void Dead()
     {
         base.Dead();
-        if (IsBurn)//保护期
+        if (IsProtect)//保护期
         {
             return;
         }
@@ -76,5 +76,27 @@ public class PlayerLeft : Player
             }
         }
         Debug.Log("Player Left Dead");
+    }
+    //碰撞检车
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        string strName = collision.gameObject.name;
+        switch (strName)
+        {
+            case "Bomb": //炸弹
+                EnemyManager.Instance.AllEnemyDead();
+                break;
+            case "IronBuff"://boss保护墙变铁块
+                break;
+            case "AddLife"://生命加1
+                Life++;
+                break;
+            case "Protect"://添加保护罩
+                break;
+            case "Star"://子弹强化
+                break;
+            case "Stop"://怪物暂停
+                break;
+        }
     }
 }

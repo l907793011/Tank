@@ -12,7 +12,9 @@ public class EnemyManager : MonoBehaviour
     private int nEnemyAllNum = 10; //敌人总数量
     private int nRemainNum = 0;//剩余敌人数量
     private int nCurNum = 0;   //当前的敌人数量
-    private int nNumInTime = 6; //当前同时在线的敌人数量
+    private int nNumInTimes = 6; //当前同时在线的敌人数量
+    private ArrayList arEnemy = new ArrayList();
+
     public GameObject[] objEnemySimple; //预制件列表 10、普通 11、普通红色 
     public GameObject[] objEnemyFast; //预制件列表  20、快速 21、快速红色 
     public GameObject[] objEnemyHard; //预制件列表   30、快速红色 31、高级白色  32、高级红色 33、高级黄色 34、高级绿色
@@ -76,7 +78,7 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (nCurNum < nNumInTime)
+        if (nCurNum < nNumInTimes)
         {
             if (nCurTime >= nCdTime)
             {
@@ -162,6 +164,7 @@ public class EnemyManager : MonoBehaviour
     private void CreateEnemyByType(int nType)
     {
         GameObject go =  GetGameObjectByType(nType);
+        arEnemy.Add(go);
     }
 
     private GameObject GetGameObjectByType(int nType)
@@ -231,11 +234,24 @@ public class EnemyManager : MonoBehaviour
 
     }
 
-    //全部怪物死亡
-    public void EnemyDead(int nType)
+    public void AllEnemyDead()
+    {
+        foreach (GameObject go in arEnemy)
+        {
+            go.SendMessage("Dead");
+        }
+    }
+
+
+
+    //怪物死亡
+    public void EnemyDead(int nType,GameObject go)
     {
         nCurNum--;
         nRemainNum--;
+        arEnemy.Remove(go);
+        Destroy(go);
+
         if (nType < 20)
         {
             nNumSimple++;
@@ -248,10 +264,10 @@ public class EnemyManager : MonoBehaviour
         {
             nNumHard++;
         }
-        GameObject go = (GameObject)arIcon[nRemainNum];
-        if (go)
+        GameObject goIcon = (GameObject)arIcon[nRemainNum];
+        if (goIcon)
         {
-            go.SetActive(false);
+            goIcon.SetActive(false);
         }
         if (nRemainNum <= 0)
         {
