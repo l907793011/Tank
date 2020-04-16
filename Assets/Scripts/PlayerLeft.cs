@@ -92,18 +92,23 @@ public class PlayerLeft : Player
                 break;
             case "IronBuff"://boss保护墙变铁块
                 GameManager.Instance.ChangeBossBoundToType(3,20f);
+                Destroy(collision.gameObject);
                 break;
             case "AddLife"://生命加1
                 PlayerManager.Instance.ChangeLeftLife(1);
+                Destroy(collision.gameObject);
                 break;
             case "Protect"://添加保护罩
                 CreateProtectEffect();
+                Destroy(collision.gameObject);
                 break;
             case "Star"://子弹强化
                 nBulletStrength = 2;
+                Destroy(collision.gameObject);
                 break;
             case "Stop"://怪物暂停
                 GameManager.Instance.StopGame(true,false,false,5f);
+                Destroy(collision.gameObject);
                 break;
         }
     }
