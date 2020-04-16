@@ -276,5 +276,17 @@ public class Player : MonoBehaviour
         audioSource.Play();
     }
 
+    //播放爆炸特效
+    //bIsAudio:是否播放爆炸音效
+    public void CreateExplode(bool bIsAudio = false)
+    {
+        GameObject goPrefab = (GameObject)Resources.Load("Prefabs/Effect/Explode");
+        GameObject go = Instantiate(goPrefab, transform.position, Quaternion.Euler(Vector3.zero));
+        if (bIsAudio)
+        {
+            go.SendMessage("PlayerAudio");
+        }
+    }
+
 
 }

@@ -238,19 +238,21 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (GameObject go in arEnemy)
         {
-            go.SendMessage("Dead");
+            go.SendMessage("Dead",true);
         }
+        arEnemy.Clear();
     }
 
-
+    public void EnemyRemove(GameObject go)
+    {
+        arEnemy.Remove(go);
+    }
 
     //怪物死亡
-    public void EnemyDead(int nType,GameObject go)
+    public void EnemyDead(int nType)
     {
         nCurNum--;
         nRemainNum--;
-        arEnemy.Remove(go);
-        Destroy(go);
 
         if (nType < 20)
         {

@@ -85,6 +85,7 @@ public class PlayerLeft : Player
         {
             case "Bomb": //炸弹
                 EnemyManager.Instance.AllEnemyDead();
+                Destroy(collision.gameObject);
                 break;
             case "IronBuff"://boss保护墙变铁块
                 break;
