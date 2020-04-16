@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour
         nAllBarrierNum = dataScene.map.Count;
         InitBarrier(nBarrier);
         PlayerManager.Instance.InitBornEffect(1);
+        CreateBuff();
     }
 
     public void InitBarrier(int n)
@@ -194,6 +195,7 @@ public class GameManager : MonoBehaviour
         return arBossBound;
     }
 
+    //改变Boss城墙
     public void ChangeBossBoundToType(int nType,float nTime = 0)
     {
         ArrayList arBossBound = GetArBossBound(nType);
@@ -210,10 +212,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //恢复Boss城墙
     public void RecoverBossBound()
     {
         ChangeBossBoundToType(1);
     }
+
+    public void CreateBuff()
+    {
+        int nTime = UnityEngine.Random.Range(5, 20);
+        StopCoroutine("CreateBuffGo");
+        Invoke("CreateBuffGo", nTime);
+    }
+
+    public void CreateBuffGo()
+    {
+        int nLen = arGoBuff.Length;
+        int nIndex = UnityEngine.Random.Range(0, nLen);
+
+        GameObject prefabObj = arGoBuff[nIndex];
+
+        int x = UnityEngine.Random.Range(-10, 10);
+        int y = UnityEngine.Random.Range(-5, 8);
+
+        Vector3 vecPos = new Vector3(x, y, 0);
+        GameObject go = Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
+        CreateBuff();
+    }
+
 
     //创建新游戏
     public void CreateNewGame()
