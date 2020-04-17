@@ -380,6 +380,7 @@ public class GameManager : MonoBehaviour
         InvokeRepeating("OnShowScoreHard", 0.03f, 0.01f);
     }
 
+    //显示积分--简单
     private void OnShowScoreSimple()
     {
         if (nCurSimple >= nScoreSimple)
@@ -388,12 +389,14 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            nDifNum = UnityEngine.Random.Range(0,5);
             nCurSimple += nDifNum;
             txtScore1.text = nCurSimple.ToString();
         }
 
     }
 
+    //显示积分--普通
     private void OnShowScoreNumFast()
     {
         if (nCurFast >= nScoreFast)
@@ -402,11 +405,13 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            nDifNum = UnityEngine.Random.Range(0, 5);
             nCurFast += nDifNum;
             txtScore2.text = nCurFast.ToString();
         }
     }
 
+    //显示积分--困难
     private void OnShowScoreHard()
     {
         if (nCurHard >= nScoreHard)
@@ -415,6 +420,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            nDifNum = UnityEngine.Random.Range(0, 5);
             nCurHard += nDifNum;
             txtScore3.text = nCurHard.ToString();
         }
