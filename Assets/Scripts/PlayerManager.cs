@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
     private float nLeftDeadTime = 0;    //左侧玩家死亡时间
     private float nRightDeadTime = 0;   //右侧玩家死亡时间
 
-    private int nLeftMaxLife = 1;
+    private int nLeftMaxLife = 3;
     private int nLeftCurLife = 0;
     private int nRightMaxLife = 0;
     private int nRightCurLife = 0;

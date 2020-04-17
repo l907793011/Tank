@@ -218,11 +218,41 @@ public class GameManager : MonoBehaviour
         ChangeBossBoundToType(1);
     }
 
+    //移除场景所有的物件
+    public void RemoveAllSceneObj()
+    {
+        RemoveAllSceneObjByTag("Enemy");
+        RemoveAllSceneObjByTag("Player");
+        RemoveAllSceneObjByTag("Bullet");
+        RemoveAllSceneObjByTag("Brick");
+        RemoveAllSceneObjByTag("Iron");
+        RemoveAllSceneObjByTag("Boss");
+        RemoveAllSceneObjByTag("Grass");
+        RemoveAllSceneObjByTag("River");
+    }
+
+    //根据类型移除对应的物件
+    public void RemoveAllSceneObjByTag(string strTag)
+    {
+        GameObject[] arGo = GameObject.FindGameObjectsWithTag(strTag);
+        foreach (GameObject go in arGo)
+        {
+            Destroy(go);
+        }
+    }
+
+    //创建BUFF预制件
     public void CreateBuff()
     {
         int nTime = UnityEngine.Random.Range(5, 20);
         StopCoroutine("CreateBuffGo");
         Invoke("CreateBuffGo", nTime);
+    }
+
+    //停止创建BUFF预制件
+    public void StopCreateBuff()
+    {
+        StopCoroutine("CreateBuffGo");
     }
 
     public void CreateBuffGo()
@@ -261,6 +291,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("EndGame: true");
         StopGame(true);
+        StopCreateBuff();
         PlayrEndGameAction();
     }
 
@@ -316,6 +347,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("ThroughGame: true");
         StopGame(true);
         OnShowThroughInfo();
+        RemoveAllSceneObj();
+        StopCreateBuff();
     }
 
     //显示通关信息
