@@ -48,8 +48,10 @@ public class GameManager : MonoBehaviour
     private int nAllBarrierNum = 0;//关卡总数
 
     public GameObject objParent = null;
-
-
+    
+    //Buff相关呢
+    private int nBuffAllNum = 5; //同时出现的BUFF最大数量
+    private int nBuffCurNum = 0; //当前初夏的BUFF数量
     //结算界面相关
     private int nScoreSimple = 0;
     private int nScoreFast = 0;
@@ -267,7 +269,16 @@ public class GameManager : MonoBehaviour
 
         Vector3 vecPos = new Vector3(x, y, 0);
         GameObject go = Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
-        CreateBuff();
+        nBuffCurNum++;
+        if (nBuffCurNum < nBuffAllNum)
+        {
+            CreateBuff();
+        }
+    }
+
+    public void ChangeBuffNum(int nNum)
+    {
+        nBuffCurNum += nNum;
     }
 
 

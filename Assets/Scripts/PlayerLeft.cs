@@ -84,32 +84,38 @@ public class PlayerLeft : Player
     public void OnCollisionEnter2D(Collision2D collision)
     {
         string strTag = collision.gameObject.tag;
+        bool bIsBuff = false;
         switch (strTag)
         {
             case "Bomb": //炸弹
                 EnemyManager.Instance.AllEnemyDead();
-                Destroy(collision.gameObject);
+                bIsBuff = true;
                 break;
             case "IronBuff"://boss保护墙变铁块
                 GameManager.Instance.ChangeBossBoundToType(3,20f);
-                Destroy(collision.gameObject);
+                bIsBuff = true;
                 break;
             case "AddLife"://生命加1
                 PlayerManager.Instance.ChangeLeftLife(1);
-                Destroy(collision.gameObject);
+                bIsBuff = true;
                 break;
             case "Protect"://添加保护罩
                 CreateProtectEffect();
-                Destroy(collision.gameObject);
+                bIsBuff = true;
                 break;
             case "Star"://子弹强化
                 nBulletStrength = 2;
-                Destroy(collision.gameObject);
+                bIsBuff = true;
                 break;
             case "Stop"://怪物暂停
                 GameManager.Instance.StopGame(true,false,false,5f);
-                Destroy(collision.gameObject);
+                bIsBuff = true;
                 break;
+        }
+        if (bIsBuff)
+        {
+            GameManager.Instance.ChangeBuffNum(-1);
+            Destroy(collision.gameObject);
         }
     }
 }
