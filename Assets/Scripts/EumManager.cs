@@ -12,11 +12,11 @@ public enum EmTagName {
 //世界物件类型
 public enum EmObjType
 {
-    E_Brick = 0, //城墙-砖
-    E_Grass = 1, //草地
-    E_Iron = 2,  //城墙-铁
-    E_River = 3, //河流
-    E_Boss = 4,  //BOSS
+    E_Brick = 1, //城墙-砖
+    E_Grass = 2, //草地
+    E_Iron = 3,  //城墙-铁
+    E_River = 4, //河流
+    E_Boss = 5,  //BOSS
 }
 
 //敌军类型 10、普通 11、普通红色 20、快速 21、快速红色 30、高级白色  31、高级红色 32、高级黄色 33、高级绿色
