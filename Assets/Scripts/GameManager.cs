@@ -144,6 +144,30 @@ public class GameManager : MonoBehaviour
         return dataDifficult.GetDifficultByType(nType);
     }
 
+    public string GetImgPathByType(int nType)
+    {
+        string strPath = null;
+        switch (nType)
+        {
+            case (int)EmObjType.E_Brick:
+                break;
+            case (int)EmObjType.E_Grass:
+                strPath = "Map_2";
+                break;
+            case (int)EmObjType.E_Iron:
+                strPath = "Map_1";
+                break;
+            case (int)EmObjType.E_River:
+                strPath = "Map_3";
+                break;
+            case (int)EmObjType.E_Boss:
+                strPath = "Map_5";
+                break;
+        }
+        return strPath;
+    }
+
+
     public void CreateGameObject(ArrayList alsBerrier)
     {
         for (int i = 0; i < alsBerrier.Count; i++)
@@ -162,10 +186,16 @@ public class GameManager : MonoBehaviour
 
     public void CreateGameObjectByType(int nType,float x,float y)
     {
-        GameObject prefabObj = lsGo[nType - 1];
+        GameObject prefabObj = lsGo[0];  //lsGo[nType - 1];
         Vector3 vecPos = new Vector3(x, y, 0);
         GameObject go = Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
-
+        SpriteRenderer sr = go.transform.GetComponent<SpriteRenderer>();
+        string strName = GetImgPathByType(nType);
+        if (strName != null)
+        {
+            Sprite sp = PPTextureManager.Instance.LoadAtlasSprite("Graphics/Map", strName);
+            sr.sprite = sp;
+        }
         int nLife = 1;
         if (nType == 3)//铁块
         {
