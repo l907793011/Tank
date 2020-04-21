@@ -186,16 +186,27 @@ public class GameManager : MonoBehaviour
 
     public void CreateGameObjectByType(int nType,float x,float y)
     {
-        GameObject prefabObj = lsGo[0];  //lsGo[nType - 1];
         Vector3 vecPos = new Vector3(x, y, 0);
-        GameObject go = Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
-        SpriteRenderer sr = go.transform.GetComponent<SpriteRenderer>();
-        string strName = GetImgPathByType(nType);
-        if (strName != null)
+        GameObject go = null;
+        GameObject prefabObj = lsGo[0];  //lsGo[nType - 1];
+        if (nType == (int)EmObjType.E_Brick)
         {
-            Sprite sp = PPTextureManager.Instance.LoadAtlasSprite("Graphics/Map", strName);
-            sr.sprite = sp;
+            prefabObj = lsGo[0];
+            go = Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
         }
+        else
+        {
+            prefabObj = lsGo[1];
+            go = Instantiate(prefabObj, vecPos, Quaternion.Euler(Vector3.zero), objParent.transform);
+            SpriteRenderer sr = go.transform.GetComponent<SpriteRenderer>();
+            string strName = GetImgPathByType(nType);
+            if (strName != null)
+            {
+                Sprite sp = PPTextureManager.Instance.LoadAtlasSprite("Graphics/Map", strName);
+                sr.sprite = sp;
+            }
+        }
+        
         int nLife = 1;
         if (nType == 3)//铁块
         {
