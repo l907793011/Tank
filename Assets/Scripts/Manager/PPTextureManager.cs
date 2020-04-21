@@ -84,5 +84,14 @@ public class PPTextureManager : MonoBehaviour
         return null;
     }
 
+    //删除图集
+    public void DeleteAtlas(string _strAtlasPath)
+    {
+        if (m_pAtlasDic.ContainsKey(_strAtlasPath))
+        {
+            m_pAtlasDic.Remove(_strAtlasPath);
+        }
+    }
+
 
 }
